@@ -10,4 +10,5 @@ Import-Module OSD -Force
 
 #Start OSDCloudScriptPad
 Write-Host -ForegroundColor Green "Start CEC Windows Imaging"
-Start-OSDPad -RepoOwner caseydaviscec -RepoName osdcloud -repofolder Deploy -BrandingTitle 'Colorado Early Colleges' -Color Blue -Hide Script
+Start-OSDPad -RepoOwner bwhetstonestdbev -RepoName osdcloud -repofolder Deploy -BrandingTitle 'Standard Beverage' -Color Blue -Hide Script
+
