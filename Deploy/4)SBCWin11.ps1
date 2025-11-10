@@ -6,20 +6,23 @@ if ((Get-MyComputerModel) -match 'Virtual') {
     Write-Host  -ForegroundColor Green "Setting Display Resolution to 1600x"
     Set-DisRes 1600
 }
-# Prompt the user to enter the Asset Tag number
-do {
-    Write-Host -ForegroundColor Cyan "Enter name of co-worker using this computer:"
-    $user = Read-Host
-    $firstName, $lastName = $user -Split " "
-    $firstNameTrim = $firstName[0]
+#Prompt the user for secure password string we'll use later
+$secureInput = Read-Host "Enter password for intune.dem" -AsSecureString
+    
+# Prompt the user to enter the name of the co-worker the computer will be assigned to for the computer name
+    
+Write-Host -ForegroundColor Cyan "Enter name of co-worker using this computer:"
+$user = Read-Host
+$firstName, $lastName = $user -Split " "
+$firstNameTrim = $firstName[0]
     if ($lastName.Length -ge 5){
         $lastNameTrim = $lastName.Substring(0,5)
     }
 
     else {$lastNameTrim = $lastName}
     $nameUpper = ("$firstNameTrim$lastNameTrim").ToUpper()
-    }
-    Write-Output "Co-worker name within computer name will be: $nameUpper"
+    
+Write-Output "Co-worker name within computer name will be: $nameUpper"
 
 Write-Host -ForegroundColor Green "Updating OSD PowerShell Module"
 Install-Module OSD -Force
@@ -161,14 +164,15 @@ $UnattendXml = @'
 <?xml version="1.0" encoding="utf-8"?>
 <unattend xmlns="urn:schemas-microsoft-com:unattend">
     <settings pass="specialize">
-        <component name="Microsoft-Windows-Deployment" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-            <RunSynchronous>
-                <RunSynchronousCommand wcm:action="add">
-                    <Order>1</Order>
-                    <Description>Start Autopilot Import & Assignment Process</Description>
-                    <Path>PowerShell -ExecutionPolicy Bypass C:\Windows\Setup\scripts\autopilot.ps1</Path>
-                </RunSynchronousCommand>
-            </RunSynchronous>
+        <component name="Microsoft-Windows-UnattendedJoin" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <Identification>
+                <JoinDomain>stdbev.com</JoinDomain>
+                    <Credentials>
+                      <Domain>stdbev.com</Domain>
+                      <Username>intune.dem/Username>
+                      <Password>$secureInput</Password>
+                    </Credentials>
+            </Identification>
         </component>
     </settings>
 </unattend>
@@ -191,5 +195,6 @@ Copy-Item X:\OSDCloud\Config\Scripts C:\OSDCloud\ -Recurse -Force
 Write-Host  -ForegroundColor Green "Restarting in 20 seconds!"
 Start-Sleep -Seconds 20
 wpeutil reboot
+
 
 
