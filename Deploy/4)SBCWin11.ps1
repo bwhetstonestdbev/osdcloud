@@ -166,12 +166,12 @@ $UnattendXml = @'
     <settings pass="specialize">
         <component name="Microsoft-Windows-UnattendedJoin" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <Identification>
-                <JoinDomain>stdbev.com</JoinDomain>
                     <Credentials>
                       <Domain>stdbev.com</Domain>
                       <Username>intune.dem/Username>
                       <Password>$secureInput</Password>
                     </Credentials>
+                    <JoinDomain>stdbev.com</JoinDomain>
             </Identification>
         </component>
     </settings>
@@ -195,6 +195,7 @@ Copy-Item X:\OSDCloud\Config\Scripts C:\OSDCloud\ -Recurse -Force
 Write-Host  -ForegroundColor Green "Restarting in 20 seconds!"
 Start-Sleep -Seconds 20
 wpeutil reboot
+
 
 
 
