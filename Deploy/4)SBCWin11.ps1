@@ -168,7 +168,7 @@ $UnattendXml = @'
             <Identification>
                     <Credentials>
                       <Domain>stdbev.com</Domain>
-                      <Username>intune.dem/Username>
+                      <Username>intune.dem</Username>
                       <Password>$secureInput</Password>
                     </Credentials>
                     <JoinDomain>stdbev.com</JoinDomain>
@@ -196,6 +196,7 @@ Copy-Item X:\OSDCloud\Config\Scripts C:\OSDCloud\ -Recurse -Force
 Write-Host  -ForegroundColor Green "Restarting in 20 seconds!"
 Start-Sleep -Seconds 20
 wpeutil reboot
+
 
 
 
