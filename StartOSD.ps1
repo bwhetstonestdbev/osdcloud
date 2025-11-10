@@ -9,6 +9,7 @@ Write-Host  -ForegroundColor Green "Importing OSD PowerShell Module"
 Import-Module OSD -Force
 
 #Start OSDCloudScriptPad
-Write-Host -ForegroundColor Green "Start CEC Windows Imaging"
+Write-Host -ForegroundColor Green "Start SBC Windows Imaging"
 Start-OSDPad -RepoOwner bwhetstonestdbev -RepoName osdcloud -repofolder Deploy -BrandingTitle 'Standard Beverage' -Color Blue -Hide Script
+
 
