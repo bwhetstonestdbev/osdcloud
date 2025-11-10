@@ -9,12 +9,16 @@ if ((Get-MyComputerModel) -match 'Virtual') {
 # Prompt the user to enter the Asset Tag number
 do {
     Write-Host -ForegroundColor Cyan "Please enter the asset tag number (3 to 5 digit number):"
-    $assetTag = Read-Host
-    if ($assetTag -match '^\d{3,5}$') {
-        $assetTag | Out-File -FilePath "X:\OSDCloud\Config\Scripts\AssetTag.txt" -Encoding ascii -Force
+    $user = Read-Host
+    $firstName, $lastName = $user -Split " "
+    $firstNameTrim = $firstName[0]
+    if ($lastName.Length -ge 5){
+        $lastNameTrim = $lastName.Substring(0,5)
     }
-} while ($assetTag -notmatch '^\d{3,5}$')
-Write-Output "You entered a valid asset tag number: $assetTag"
+
+    else {$lastNameTrim = $lastName}
+    $nameUpper = ("$firstNameTrim$lastNameTrim").ToUpper()
+    Write-Output "You entered a valid asset tag number: $assetTag"
 
 Write-Host -ForegroundColor Green "Updating OSD PowerShell Module"
 Install-Module OSD -Force
@@ -27,10 +31,10 @@ Import-Module OSD -Force
 #=======================================================================
 $Params = @{
     OSVersion  = "Windows 11"
-    OSBuild    = "24H2"
-    OSEdition  = "Pro"
+    OSBuild    = "25H2"
+    OSEdition  = "Enterprise"
     OSLanguage = "en-us"
-    OSLicense  = "Volume"
+    OSLicense  = "Retail"
     ZTI        = $true
     Firmware   = $true
 }
@@ -94,54 +98,54 @@ $OOBEDeployJson | Out-File -FilePath "C:\ProgramData\OSDeploy\OSDeploy.OOBEDeplo
 #$Serial = Get-WmiObject Win32_bios | Select-Object -ExpandProperty SerialNumber
 #$AssignedComputerName = "CEC-$Serial"
 
-Write-Host -ForegroundColor Green "Create C:\ProgramData\OSDeploy\OSDeploy.AutopilotOOBE.json"
-$AutopilotOOBEJson = @"
-{
-    "AssignedComputerName" : "",
-    "AddToGroup":  "Autopilot - Device - Staff Shared Win11",
-    "Assign":  {
-                   "IsPresent":  true
-               },
-    "GroupTag":  "Staff",
-    "Hidden":  [
-                   "AddToGroup",
-                   "AssignedUser",
-                   "PostAction",
-                   "GroupTag",
-                   "Assign",
-                   "Docs"
-               ],
-    "PostAction":  "Restart",
-    "Run":  "NetworkingWireless",
-    "Title":  "CEC Autopilot Manual Register"
-}
-"@
-
-If (!(Test-Path "C:\ProgramData\OSDeploy")) {
-    New-Item "C:\ProgramData\OSDeploy" -ItemType Directory -Force | Out-Null
-}
-$AutopilotOOBEJson | Out-File -FilePath "C:\ProgramData\OSDeploy\OSDeploy.AutopilotOOBE.json" -Encoding ascii -Force
+#Write-Host -ForegroundColor Green "Create C:\ProgramData\OSDeploy\OSDeploy.AutopilotOOBE.json"
+#$AutopilotOOBEJson = @"
+#{
+#    "AssignedComputerName" : "",
+#    "AddToGroup":  "Autopilot - Device - Staff Shared Win11",
+#    "Assign":  {
+#                   "IsPresent":  true
+#               },
+#    "GroupTag":  "Staff",
+#    "Hidden":  [
+#                   "AddToGroup",
+#                   "AssignedUser",
+#                   "PostAction",
+#                   "GroupTag",
+#                   "Assign",
+#                   "Docs"
+#               ],
+#    "PostAction":  "Restart",
+#    "Run":  "NetworkingWireless",
+#    "Title":  "CEC Autopilot Manual Register"
+#}
+#"@
+#
+#If (!(Test-Path "C:\ProgramData\OSDeploy")) {
+#   New-Item "C:\ProgramData\OSDeploy" -ItemType Directory -Force | Out-Null
+#}
+#$AutopilotOOBEJson | Out-File -FilePath "C:\ProgramData\OSDeploy\OSDeploy.AutopilotOOBE.json" -Encoding ascii -Force
 
 #================================================
 #  [PostOS] OOBE CMD Command Line
 #================================================
-Invoke-RestMethod https://raw.githubusercontent.com/caseydaviscec/osdcloud/main/Set-LenovoAssetTag.ps1 | Out-File -FilePath 'C:\Windows\Setup\scripts\set-lenovoassettag.ps1' -Encoding ascii -Force
+#Invoke-RestMethod https://raw.githubusercontent.com/caseydaviscec/osdcloud/main/Set-LenovoAssetTag.ps1 | Out-File -FilePath 'C:\Windows\Setup\scripts\set-lenovoassettag.ps1' -Encoding ascii -Force
 Invoke-RestMethod https://raw.githubusercontent.com/caseydaviscec/osdcloud/refs/heads/main/Rename-Computer.ps1 | Out-File -FilePath 'C:\Windows\Setup\scripts\rename-computer.ps1' -Encoding ascii -Force
-Invoke-RestMethod https://raw.githubusercontent.com/caseydaviscec/osdcloud/refs/heads/main/Autopilot.ps1 | Out-File -FilePath 'C:\Windows\Setup\scripts\autopilot.ps1' -Encoding ascii -Force
-Invoke-RestMethod https://raw.githubusercontent.com/caseydaviscec/osdcloud/refs/heads/main/Set-LenovoBios.ps1 | Out-File -FilePath 'C:\Windows\Setup\scripts\set-lenovobios.ps1' -Encoding ascii -Force
-$OOBECMD = @'
-@echo off
+#Invoke-RestMethod https://raw.githubusercontent.com/caseydaviscec/osdcloud/refs/heads/main/Autopilot.ps1 | Out-File -FilePath 'C:\Windows\Setup\scripts\autopilot.ps1' -Encoding ascii -Force
+#Invoke-RestMethod https://raw.githubusercontent.com/caseydaviscec/osdcloud/refs/heads/main/Set-LenovoBios.ps1 | Out-File -FilePath 'C:\Windows\Setup\scripts\set-lenovobios.ps1' -Encoding ascii -Force
+#$OOBECMD = @'
+#@echo off
 
 # Prompt for setting Lenovo Asset Tag
-start /wait powershell.exe -NoL -ExecutionPolicy Bypass -F C:\Windows\Setup\Scripts\set-lenovoassettag.ps1
+#start /wait powershell.exe -NoL -ExecutionPolicy Bypass -F C:\Windows\Setup\Scripts\set-lenovoassettag.ps1
 
 
 # Below a PS session for debug and testing in system context, # when not needed 
 # start /wait powershell.exe -NoL -ExecutionPolicy Bypass
 
-exit 
-'@
-$OOBECMD | Out-File -FilePath 'C:\Windows\Setup\scripts\oobe.cmd' -Encoding ascii -Force
+#exit 
+#'@
+#$OOBECMD | Out-File -FilePath 'C:\Windows\Setup\scripts\oobe.cmd' -Encoding ascii -Force
 
 #================================================
 #  [PostOS] SetupComplete CMD Command Line
@@ -186,3 +190,4 @@ Copy-Item X:\OSDCloud\Config\Scripts C:\OSDCloud\ -Recurse -Force
 Write-Host  -ForegroundColor Green "Restarting in 20 seconds!"
 Start-Sleep -Seconds 20
 wpeutil reboot
+
