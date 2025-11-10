@@ -6,8 +6,13 @@ Start-Transcript -Path $logFile -NoClobber
 $VerbosePreference = "Continue"
 
 # Set Hostname before Autopilot
-Write-Host -ForegroundColor Red "Rename Computer before Autopilot"
+param(
+$Name
+)
+Write-Host -ForegroundColor Red "Rename Computer before Domain Join"
 $Serial = Get-WmiObject Win32_bios | Select-Object -ExpandProperty SerialNumber
-Rename-Computer -Newname CEC-$Serial -Restart -Force
+$ComputerName = 'D' + $Serial + '-' + $Name
+Rename-Computer -Newname $ComputerName -Restart -Force
 
 Stop-Transcript
+
