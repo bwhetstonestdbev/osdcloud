@@ -1,4 +1,4 @@
-er #Script to deploy Windows 11 Part Time, Contractors, etc Staff (A1) shared devices.
+#Script to deploy Windows 11 Part Time, Contractors, etc Staff (A1) shared devices.
 #================================================
 #   [PreOS] Update Module
 #================================================
@@ -196,6 +196,7 @@ Copy-Item X:\OSDCloud\Config\Scripts C:\OSDCloud\ -Recurse -Force
 Write-Host  -ForegroundColor Green "Restarting in 20 seconds!"
 Start-Sleep -Seconds 20
 wpeutil reboot
+
 
 
 
