@@ -1,4 +1,4 @@
-#Script to deploy Windows 11 Part Time, Contractors, etc Staff (A1) shared devices.
+er #Script to deploy Windows 11 Part Time, Contractors, etc Staff (A1) shared devices.
 #================================================
 #   [PreOS] Update Module
 #================================================
@@ -8,7 +8,7 @@ if ((Get-MyComputerModel) -match 'Virtual') {
 }
 # Prompt the user to enter the Asset Tag number
 do {
-    Write-Host -ForegroundColor Cyan "Please enter the asset tag number (3 to 5 digit number):"
+    Write-Host -ForegroundColor Cyan "Enter name of co-worker using this computer:"
     $user = Read-Host
     $firstName, $lastName = $user -Split " "
     $firstNameTrim = $firstName[0]
@@ -18,7 +18,8 @@ do {
 
     else {$lastNameTrim = $lastName}
     $nameUpper = ("$firstNameTrim$lastNameTrim").ToUpper()
-    Write-Output "You entered a valid asset tag number: $assetTag"
+    }
+    Write-Output "Co-worker name within computer name will be: $nameUpper"
 
 Write-Host -ForegroundColor Green "Updating OSD PowerShell Module"
 Install-Module OSD -Force
@@ -152,7 +153,7 @@ Invoke-RestMethod https://raw.githubusercontent.com/caseydaviscec/osdcloud/refs/
 #================================================
 Write-Host -ForegroundColor Green "Create C:\Windows\Setup\Scripts\SetupComplete.cmd"
 $SetupCompleteCMD = @'
-powershell.exe -NoL -ExecutionPolicy Bypass -F C:\Windows\Setup\Scripts\rename-computer.ps1
+powershell.exe -NoL -ExecutionPolicy Bypass -F C:\Windows\Setup\Scripts\rename-computer.ps1 -Name $nameUpper
 '@
 $SetupCompleteCMD | Out-File -FilePath 'C:\Windows\Setup\Scripts\SetupComplete.cmd' -Encoding ascii -Force
 
@@ -190,4 +191,5 @@ Copy-Item X:\OSDCloud\Config\Scripts C:\OSDCloud\ -Recurse -Force
 Write-Host  -ForegroundColor Green "Restarting in 20 seconds!"
 Start-Sleep -Seconds 20
 wpeutil reboot
+
 
