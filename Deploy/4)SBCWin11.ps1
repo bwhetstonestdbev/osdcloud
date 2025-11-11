@@ -156,7 +156,7 @@ Invoke-RestMethod https://raw.githubusercontent.com/bwhetstonestdbev/osdcloud/re
 Write-Host -ForegroundColor Green "Create C:\Windows\Setup\Scripts\SetupComplete.cmd"
 $SetupCompleteCMD = @'
 powershell.exe -NoL -ExecutionPolicy Bypass -F C:\Windows\Setup\Scripts\rename-computer.ps1 
-powershell.exe -NoL -ExecutionPolicy Bypass -F C:\Windows\Setup\Scripts\SetupComplete\JoinDomain.ps1
+powershell.exe -NoL -ExecutionPolicy Bypass -F C:\OSDCloud\Setup\Scripts\SetupComplete\JoinDomain.ps1
 '@
 $SetupCompleteCMD | Out-File -FilePath 'C:\Windows\Setup\Scripts\SetupComplete.cmd' -Encoding ascii -Force
 
@@ -196,6 +196,7 @@ Copy-Item X:\OSDCloud\Config\Scripts C:\OSDCloud\ -Recurse -Force
 Write-Host  -ForegroundColor Green "Restarting in 20 seconds!"
 Start-Sleep -Seconds 20
 wpeutil reboot
+
 
 
 
