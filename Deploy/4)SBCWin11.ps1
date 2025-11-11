@@ -8,7 +8,13 @@ if ((Get-MyComputerModel) -match 'Virtual') {
 }
 #Prompt the user for secure password string we'll use later
 $secureInput = Read-Host "Enter password for intune.dem" -AsSecureString
-$password = ConvertFrom-SecureString $secureInput -AsPlainText
+function ConvertFrom-SecureStringToPlainText ([System.Security.SecureString]$SecureString) {
+    [System.Runtime.InteropServices.Marshal]::PtrToStringAuto(
+        [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($SecureString)
+    )            
+}
+New-Alias -Name s2p -Value ConvertFrom-SecureStringToPlainText
+$password = s2p $secureInput
     
 # Prompt the user to enter the name of the co-worker the computer will be assigned to for the computer name
     
@@ -196,6 +202,7 @@ Copy-Item X:\OSDCloud\Config\Scripts C:\OSDCloud\ -Recurse -Force
 Write-Host  -ForegroundColor Green "Restarting in 20 seconds!"
 Start-Sleep -Seconds 20
 wpeutil reboot
+
 
 
 
