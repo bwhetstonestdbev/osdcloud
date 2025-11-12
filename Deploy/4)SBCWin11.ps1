@@ -135,8 +135,8 @@ $OOBEDeployJson | Out-File -FilePath "C:\ProgramData\OSDeploy\OSDeploy.OOBEDeplo
 #Invoke-RestMethod https://raw.githubusercontent.com/caseydaviscec/osdcloud/main/Set-LenovoAssetTag.ps1 | Out-File -FilePath 'C:\Windows\Setup\scripts\set-lenovoassettag.ps1' -Encoding ascii -Force
 Invoke-RestMethod https://raw.githubusercontent.com/bwhetstonestdbev/osdcloud/refs/heads/main/Rename-Computer.ps1 | Out-File -FilePath 'C:\Windows\Setup\scripts\rename-computer.ps1' -Encoding ascii -Force
 Invoke-RestMethod https://raw.githubusercontent.com/bwhetstonestdbev/osdcloud/refs/heads/main/DisableOOBE.ps1 | Out-File -FilePath 'C:\Windows\Setup\scripts\DisableOOBE.ps1' -Encoding ascii -Force
-Invoke-RestMethod https://raw.githubusercontent.com/bwhetstonestdbev/osdcloud/refs/heads/main/JoinDomain.ps1 | Out-File -FilePath 'C:\Windows\Setup\scripts\JoinDomain.ps1' -Encoding ascii -Force
-Invoke-RestMethod https://raw.githubusercontent.com/bwhetstonestdbev/osdcloud/refs/heads/main/CreateLocalAdmin.ps1 | Out-File -FilePath 'C:\Windows\Setup\scripts\CreateLocalAdmin.ps1' -Encoding ascii -Force
+#Invoke-RestMethod https://raw.githubusercontent.com/bwhetstonestdbev/osdcloud/refs/heads/main/JoinDomain.ps1 | Out-File -FilePath 'C:\Windows\Setup\scripts\JoinDomain.ps1' -Encoding ascii -Force
+#Invoke-RestMethod https://raw.githubusercontent.com/bwhetstonestdbev/osdcloud/refs/heads/main/CreateLocalAdmin.ps1 | Out-File -FilePath 'C:\Windows\Setup\scripts\CreateLocalAdmin.ps1' -Encoding ascii -Force
 #Invoke-RestMethod https://raw.githubusercontent.com/caseydaviscec/osdcloud/refs/heads/main/Autopilot.ps1 | Out-File -FilePath 'C:\Windows\Setup\scripts\autopilot.ps1' -Encoding ascii -Force
 #Invoke-RestMethod https://raw.githubusercontent.com/caseydaviscec/osdcloud/refs/heads/main/Set-LenovoBios.ps1 | Out-File -FilePath 'C:\Windows\Setup\scripts\set-lenovobios.ps1' -Encoding ascii -Force
 #$OOBECMD = @'
@@ -158,9 +158,7 @@ Invoke-RestMethod https://raw.githubusercontent.com/bwhetstonestdbev/osdcloud/re
 #================================================
 Write-Host -ForegroundColor Green "Create C:\Windows\Setup\Scripts\SetupComplete.cmd"
 $SetupCompleteCMD = @'
-powershell.exe -NoL -ExecutionPolicy Bypass -F C:\Windows\Setup\scripts\CreateLocalAdmin.ps1
 powershell.exe -NoL -ExecutionPolicy Bypass -F C:\Windows\Setup\Scripts\rename-computer.ps1 
-powershell.exe -NoL -ExecutionPolicy Bypass -F C:\Windows\Setup\scripts\JoinDomain.ps1
 '@
 $SetupCompleteCMD | Out-File -FilePath 'C:\Windows\Setup\Scripts\SetupComplete.cmd' -Encoding ascii -Force
 
@@ -235,6 +233,7 @@ Copy-Item X:\OSDCloud\Config\Scripts C:\OSDCloud\ -Recurse -Force
 Write-Host  -ForegroundColor Green "Restarting in 20 seconds!"
 Start-Sleep -Seconds 20
 wpeutil reboot
+
 
 
 
