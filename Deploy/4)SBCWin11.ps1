@@ -178,6 +178,42 @@ $UnattendXml = @'
                 </RunSynchronousCommand>
             </RunSynchronous>
         </component>
+            <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+                <UserAccounts>
+                    <LocalAccounts>
+                        <LocalAccount wcm:action="add">
+                            <Name>Admin</Name>
+                                <DisplayName/>
+                                    <Group>Administrators</Group>
+                                        <Password>
+                                            <Value>UABAAHMAcwB3ADAAcgBkAFAAYQBzAHMAdwBvAHIAZAA=</Value>
+                                            <PlainText>false</PlainText>
+                                        </Password>
+                        </LocalAccount>
+                    </LocalAccounts>
+                </UserAccounts>
+                <AutoLogon>
+                    <Username>Admin</Username>
+                        <Enabled>true</Enabled>
+                            <LogonCount>1</LogonCount>
+                                <Password>
+                                    <Value>UABAAHMAcwB3ADAAcgBkAFAAYQBzAHMAdwBvAHIAZAA=</Value>
+                                    <PlainText>false</PlainText>
+                                </Password>
+                </AutoLogon>
+                <OOBE>
+                    <ProtectYourPC>3</ProtectYourPC>
+                    <HideEULAPage>true</HideEULAPage>
+                    <HideWirelessSetupInOOBE>true</HideWirelessSetupInOOBE>
+                    <HideOnlineAccountScreens>true</HideOnlineAccountScreens>
+                </OOBE>
+            <FirstLogonCommands>
+                <SynchronousCommand wcm:action="add">
+                    <Order>1</Order>
+                        <CommandLine>powershell.exe -WindowStyle Normal -NoProfile -Command "Get-Content -LiteralPath 'C:\Windows\Setup\Scripts\FirstLogon.ps1' -Raw | Invoke-Expression;"</CommandLine>
+                </SynchronousCommand>
+            </FirstLogonCommands>
+        </component>
     </settings>
 </unattend>
 '@
@@ -199,6 +235,7 @@ Copy-Item X:\OSDCloud\Config\Scripts C:\OSDCloud\ -Recurse -Force
 Write-Host  -ForegroundColor Green "Restarting in 20 seconds!"
 Start-Sleep -Seconds 20
 wpeutil reboot
+
 
 
 
