@@ -164,7 +164,7 @@ powershell.exe -NoL -ExecutionPolicy Bypass -F C:\Windows\Setup\scripts\JoinDoma
 '@
 $SetupCompleteCMD | Out-File -FilePath 'C:\Windows\Setup\Scripts\SetupComplete.cmd' -Encoding ascii -Force
 
-<#
+
 $UnattendXml = @'
 <?xml version="1.0" encoding="utf-8"?>
 <unattend xmlns="urn:schemas-microsoft-com:unattend">
@@ -183,7 +183,7 @@ $UnattendXml = @'
                     <LocalAccounts>
                         <LocalAccount wcm:action="add">
                             <Name>Admin</Name>
-                                <DisplayName/>
+                                <DisplayName>SBCAdmin</DisplayName>
                                     <Group>Administrators</Group>
                                         <Password>
                                             <Value>UABAAHMAcwB3ADAAcgBkAFAAYQBzAHMAdwBvAHIAZAA=</Value>
@@ -225,7 +225,7 @@ if (-NOT (Test-Path 'C:\Windows\Panther')) {
 $Panther = 'C:\Windows\Panther'
 $UnattendPath = "$Panther\Unattend.xml"
 $UnattendXml | Out-File -FilePath $UnattendPath -Encoding utf8 -Width 2000 -Force
-#>
+
 Write-Host "Copying USB Drive Scripts"
 Copy-Item X:\OSDCloud\Config\Scripts C:\OSDCloud\ -Recurse -Force
 
@@ -235,6 +235,7 @@ Copy-Item X:\OSDCloud\Config\Scripts C:\OSDCloud\ -Recurse -Force
 Write-Host  -ForegroundColor Green "Restarting in 20 seconds!"
 Start-Sleep -Seconds 20
 wpeutil reboot
+
 
 
 
