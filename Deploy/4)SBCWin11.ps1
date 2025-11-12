@@ -34,8 +34,8 @@ Import-Module OSD -Force
 #=======================================================================
 $Params = @{
     OSVersion  = "Windows 11"
-    OSBuild    = "25H2"
-    OSEdition  = "Enterprise"
+    OSBuild    = "24H2"
+    OSEdition  = "Pro"
     OSLanguage = "en-us"
     OSLicense  = "Volume"
     ZTI        = $true
@@ -235,6 +235,7 @@ Copy-Item X:\OSDCloud\Config\Scripts C:\OSDCloud\ -Recurse -Force
 Write-Host  -ForegroundColor Green "Restarting in 20 seconds!"
 Start-Sleep -Seconds 20
 wpeutil reboot
+
 
 
 
