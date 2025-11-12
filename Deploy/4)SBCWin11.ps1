@@ -157,26 +157,23 @@ Invoke-RestMethod https://raw.githubusercontent.com/bwhetstonestdbev/osdcloud/re
 Write-Host -ForegroundColor Green "Create C:\Windows\Setup\Scripts\SetupComplete.cmd"
 $SetupCompleteCMD = @'
 powershell.exe -NoL -ExecutionPolicy Bypass -F C:\OSDCloud\Scripts\SetupComplete\CreateLocalAdmin.ps1
-powershell.exe -NoL -ExecutionPolicy Bypass -F C:\Windows\Setup\Scripts\DisableOOBE.ps1 
 powershell.exe -NoL -ExecutionPolicy Bypass -F C:\Windows\Setup\Scripts\rename-computer.ps1 
-powershell.exe -NoL -ExecutionPolicy Bypass -F C:\OSDCloud\Scripts\SetupComplete\JoinDomain.ps1
 '@
 $SetupCompleteCMD | Out-File -FilePath 'C:\Windows\Setup\Scripts\SetupComplete.cmd' -Encoding ascii -Force
 
-<#
+
 $UnattendXml = @'
 <?xml version="1.0" encoding="utf-8"?>
 <unattend xmlns="urn:schemas-microsoft-com:unattend">
     <settings pass="specialize">
-        <component name="Microsoft-Windows-UnattendedJoin" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-            <Identification>
-                    <Credentials>
-                      <Domain>stdbev.com</Domain>
-                      <Username>intune.dem</Username>
-                      <Password>$password</Password>
-                    </Credentials>
-                    <JoinDomain>stdbev.com</JoinDomain>
-            </Identification>
+        <component name="Microsoft-Windows-Deployment" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <RunSynchronous>
+                <RunSynchronousCommand wcm:action="add">
+                    <Order>1</Order>
+                    <Description>Join Computer to STDBEV.Com Domain</Description>
+                    <Path>PowerShell -ExecutionPolicy Bypass C:\OSDCloud\Scripts\SetupComplete\JoinDomain.ps1</Path>
+                </RunSynchronousCommand>
+            </RunSynchronous>
         </component>
     </settings>
 </unattend>
@@ -189,7 +186,7 @@ if (-NOT (Test-Path 'C:\Windows\Panther')) {
 $Panther = 'C:\Windows\Panther'
 $UnattendPath = "$Panther\Unattend.xml"
 $UnattendXml | Out-File -FilePath $UnattendPath -Encoding utf8 -Width 2000 -Force
-#>
+
 Write-Host "Copying USB Drive Scripts"
 Copy-Item X:\OSDCloud\Config\Scripts C:\OSDCloud\ -Recurse -Force
 
@@ -199,6 +196,7 @@ Copy-Item X:\OSDCloud\Config\Scripts C:\OSDCloud\ -Recurse -Force
 Write-Host  -ForegroundColor Green "Restarting in 20 seconds!"
 Start-Sleep -Seconds 20
 wpeutil reboot
+
 
 
 
