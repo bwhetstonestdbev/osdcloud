@@ -49,3 +49,5 @@ $SetupCompleteCMD | Out-File -FilePath 'C:\Windows\Setup\Scripts\SetupComplete.c
 
 Copy-Item D:\unattend.xml C:\Windows\Panther -Force
 Copy-Item X:\OSDCloud\Config\Scripts\Name.txt C:\OSDCloud\Scripts -Force
+
+Restart-Computer
