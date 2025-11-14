@@ -31,10 +31,13 @@ Import-Module OSD -Force
 $Params = @{
     OSVersion  = "Windows 11"
     OSBuild    = "25H2"
-    OSEdition  = "Pro"
+    OSEdition  = "Enterprise"
     OSLanguage = "en-us"
     OSLicense  = "Volume"
     ZTI        = $true
     Firmware   = $true
 }
 Start-OSDCloud @Params
+
+Copy-Item D:\unattend.xml C:\Windows\Panther -Force
+
