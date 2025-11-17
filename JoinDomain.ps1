@@ -3,11 +3,17 @@ $scriptName = ([System.IO.Path]::GetFileNameWithoutExtension($(Split-Path $scrip
 $logFile = "$env:OSDCloud\Logs\$scriptName-" + $stampDate.ToFileTimeUtc() + ".log"
 Start-Transcript -Path $logFile -NoClobber
 $VerbosePreference = "Continue"
+
+$input = Get-Content -Path $env:SystemDrive\OSDCloud\Scripts\Name.txt
+Write-Host -ForegroundColor Red "Rename Computer before Domain Join"
+$Serial = Get-WmiObject Win32_bios | Select-Object -ExpandProperty SerialNumber
+$ComputerName = 'D' + $Serial + '-' + $input
  
 $SecurePassword = ConvertTo-SecureString "!Ntun3dem" -AsPlainText -Force
 $Creds = New-Object System.Management.Automation.PSCredential ("stdbev.com\intune.dem",$SecurePassword)
-Add-Computer -DomainName stdbev.com -Credential $Creds -OUPath "OU=Computers - STDBEV,DC=stdbev,DC=com" -Restart
+Add-Computer -DomainName stdbev.com -Credential $Creds -OUPath "OU=Computers - STDBEV,DC=stdbev,DC=com" -NewName $ComputerName -Restart
 
 Stop-Transcript
+
 
 
