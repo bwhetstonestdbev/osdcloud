@@ -12,13 +12,8 @@ $Serial = Get-WmiObject Win32_bios | Select-Object -ExpandProperty SerialNumber
 $ComputerName = 'D' + $Serial + '-' + $input
 Rename-Computer -Newname $ComputerName -Force
 
-﻿$SecurePassword = ConvertTo-SecureString "!Ntun3dem" -AsPlainText -Force
-
-$Creds = New-Object System.Management.Automation.PSCredential ("intune.dem",$SecurePassword)
-
-Add-Computer -DomainName stdbev.com -Credential $Creds -OUPath "OU=Computers - STDBEV,DC=stdbev,DC=com" -Restart
-
 Stop-Transcript
+
 
 
 
