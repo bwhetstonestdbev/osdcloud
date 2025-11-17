@@ -11,9 +11,10 @@ $ComputerName = 'D' + $Serial + '-' + $input
  
 $SecurePassword = ConvertTo-SecureString "!Ntun3dem" -AsPlainText -Force
 $Creds = New-Object System.Management.Automation.PSCredential ("stdbev.com\intune.dem",$SecurePassword)
-Add-Computer -DomainName stdbev.com -Credential $Creds -OUPath "OU=Computers - STDBEV,DC=stdbev,DC=com" -NewName $ComputerName -Restart
+Add-Computer -DomainName stdbev.com -Credential $Creds -OUPath "OU=Computers - STDBEV,DC=stdbev,DC=com" -NewName $ComputerName -Force -Restart
 
 Stop-Transcript
+
 
 
 
