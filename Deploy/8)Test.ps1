@@ -46,6 +46,10 @@ $Params = @{
 }
 Start-OSDCloud @Params
 
+#================================================
+#  [PostOS] OOBEDeploy Configuration
+#================================================
+
 Write-Host -ForegroundColor Green "Create C:\ProgramData\OSDeploy\OSDeploy.OOBEDeploy.json"
 $OOBEDeployJson = @'
 {
