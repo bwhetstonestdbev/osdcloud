@@ -38,7 +38,7 @@ $sourcePath = "\\sbcitutil1\OSDCloud\Installers"
 try{
 New-PSDrive -Name "Z" -PSProvider FileSystem -Root $sourcePath -Credential $credentials -ErrorAction Stop
 
-Copy-Item -Path "Z:\*" -Destination $destinationPath -Recurse -Force -ErrorAction Stop
+Copy-Item -Path "Z:\*" -Destination $installerPath -Recurse -Force -ErrorAction Stop
 
 }
 
@@ -70,6 +70,8 @@ Start-Process -FilePath "C:\Installers\jre-8u471-windows-x64.exe" -ArgumentList 
 
 #Install ASW
 Start-Process -FilePath "C:\Installers\IBMiAccess_v1r1\Windows_Application\install_acs_32_allusers.js"
+Move-Item -Path "C:\Users\Public\Desktop\Access Client Solutions.lnk" -Destination "C:\"
+Move-Item -Path "C:\Users\Public\Desktop\ACS Session Mgr.lnk" -Destination "C:\"
 
 
 #=================================
@@ -77,8 +79,8 @@ Start-Process -FilePath "C:\Installers\IBMiAccess_v1r1\Windows_Application\insta
 #=================================
 
 #Reset Registry to not allow automatic login
-Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\WinLogin' -Name 'AutoAdminLogon' -Value 0 -Force
-Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\WinLogin' -Name 'DefaultUserName' -Value "" -Force
+Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\WinLogon' -Name 'AutoAdminLogon' -Value 0 -Force
+Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\WinLogon' -Name 'DefaultUserName' -Value "" -Force
 
 #Delete OSDCloud Directory and unattend.xml 
 Remove-Item -Path "C:\OSDCloud" -Recurse
@@ -86,5 +88,6 @@ Remove-Item -Path "C:\Windows\Panther\unattend.xml"
 Remove-Item -Path "C:\Windows\Setup\Scripts\JoinDomain.ps1"
 
 Restart-Computer
+
 
 
