@@ -87,3 +87,4 @@ Remove-Item -Path "C:\Windows\Setup\Scripts\JoinDomain.ps1"
 
 Restart-Computer
 
+
