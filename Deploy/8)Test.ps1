@@ -20,7 +20,8 @@ $firstNameTrim = $firstName[0]
 Write-Output "Co-worker name within computer name will be: $nameUpper"
 
 #Get password for domain admin, convert to plain text and store in a text file that can be accessed by the script to join domain
-$securedValue = Read-Host "Enter domain admin password" -AsSecureString
+Write-Host -ForegroundColor Cyan "Enter domain admin password"
+$securedValue = Read-Host -AsSecureString
 $bstr = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($securedValue)
 $value = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($bstr)
 [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($bstr)
