@@ -14,7 +14,7 @@ $credentials = New-Object System.Management.Automation.PSCredential -ArgumentLis
 #=================================
 
 $key = (Get-WmiObject -query 'select * from SoftwareLicensingService').OA3xOriginalProductKey
-slmgr /ipk $key
+slmgr //b /ipk $key
 
 #=================================
 #Set Timezone
@@ -89,6 +89,7 @@ Remove-Item -Path "C:\Windows\Setup\Scripts\JoinDomain.ps1"
 Remove-Item -Path "C:\Users\Public\Desktop\PostDeploy.ps1"
 
 Restart-Computer
+
 
 
 
