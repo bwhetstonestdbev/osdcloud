@@ -19,6 +19,13 @@ $firstNameTrim = $firstName[0]
     
 Write-Output "Co-worker name within computer name will be: $nameUpper"
 
+#Get password for domain admin, convert to plain text and store in a text file that can be accessed by the script to join domain
+$securedValue = Read-Host "Enter domain admin password" -AsSecureString
+$bstr = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($securedValue)
+$value = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($bstr)
+[Runtime.InteropServices.Marshal]::ZeroFreeBSTR($bstr)
+$value | Out-File -FilePath "X:\OSDCloud\Config\Scripts\pass.txt" -Encoding ascii -Force
+
 Write-Host -ForegroundColor Green "Updating OSD PowerShell Module"
 Install-Module OSD -Force
 
@@ -49,5 +56,6 @@ $SetupCompleteCMD | Out-File -FilePath 'C:\Windows\Setup\Scripts\SetupComplete.c
 
 Copy-Item D:\unattend.xml C:\Windows\Panther -Force
 Copy-Item X:\OSDCloud\Config\Scripts\Name.txt C:\OSDCloud\Scripts -Force
+Copy-Item X:\OSDCloud\Config\Scripts\pass.txt C:\OSDCloud\Scripts -Force
 
 Restart-Computer
