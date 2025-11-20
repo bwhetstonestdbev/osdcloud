@@ -1,4 +1,9 @@
-﻿#=================================
+$stampDate = Get-Date
+$scriptName = ([System.IO.Path]::GetFileNameWithoutExtension($(Split-Path $script:MyInvocation.MyCommand.Path -Leaf)))
+$logFile = "$env:OSDCloud\Logs\$scriptName-" + $stampDate.ToFileTimeUtc() + ".log"
+Start-Transcript -Path $logFile -NoClobber
+$VerbosePreference = "Continue"
+ #=================================
 #Post Image Deploy Cleanup
 #=================================
 
@@ -94,7 +99,9 @@ Remove-Item -Path "C:\Windows\Panther\unattend.xml"
 Remove-Item -Path "C:\Windows\Setup\Scripts\JoinDomain.ps1"
 Remove-Item -Path "C:\Users\Public\Desktop\PostDeploy.ps1"
 
-#Restart-Computer
+Stop-Transcript
+Restart-Computer
+
 
 
 
