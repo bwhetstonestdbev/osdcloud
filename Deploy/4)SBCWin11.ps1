@@ -1,7 +1,3 @@
-#Script to deploy Windows 11 Part Time, Contractors, etc Staff (A1) shared devices.
-#================================================
-#   [PreOS] Update Module
-#================================================
 if ((Get-MyComputerModel) -match 'Virtual') {
     Write-Host  -ForegroundColor Green "Setting Display Resolution to 1600x"
     Set-DisRes 1600
@@ -23,6 +19,14 @@ $firstNameTrim = $firstName[0]
     
 Write-Output "Co-worker name within computer name will be: $nameUpper"
 
+#Get password for domain admin, convert to plain text and store in a text file that can be accessed by the script to join domain
+Write-Host -ForegroundColor Cyan "Enter domain admin password"
+$securedValue = Read-Host -AsSecureString
+$bstr = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($securedValue)
+$value = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($bstr)
+[Runtime.InteropServices.Marshal]::ZeroFreeBSTR($bstr)
+$value | Out-File -FilePath "X:\OSDCloud\Config\Scripts\pass.txt" -Encoding ascii -Force
+
 Write-Host -ForegroundColor Green "Updating OSD PowerShell Module"
 Install-Module OSD -Force
 
@@ -34,7 +38,7 @@ Import-Module OSD -Force
 #=======================================================================
 $Params = @{
     OSVersion  = "Windows 11"
-    OSBuild    = "24H2"
+    OSBuild    = "25H2"
     OSEdition  = "Pro"
     OSLanguage = "en-us"
     OSLicense  = "Volume"
@@ -46,6 +50,7 @@ Start-OSDCloud @Params
 #================================================
 #  [PostOS] OOBEDeploy Configuration
 #================================================
+
 Write-Host -ForegroundColor Green "Create C:\ProgramData\OSDeploy\OSDeploy.OOBEDeploy.json"
 $OOBEDeployJson = @'
 {
@@ -94,125 +99,68 @@ If (!(Test-Path "C:\ProgramData\OSDeploy")) {
 }
 $OOBEDeployJson | Out-File -FilePath "C:\ProgramData\OSDeploy\OSDeploy.OOBEDeploy.json" -Encoding ascii -Force
 
-#================================================
-#  [PostOS] AutopilotOOBE Configuration Staging
-#================================================
-# AssignedComputerName needs to be blank for Self-Deploying Autopilot
-#$Serial = Get-WmiObject Win32_bios | Select-Object -ExpandProperty SerialNumber
-#$AssignedComputerName = "CEC-$Serial"
+Invoke-RestMethod https://raw.githubusercontent.com/bwhetstonestdbev/osdcloud/refs/heads/main/JoinDomain.ps1 | Out-File -FilePath 'C:\Windows\Setup\scripts\JoinDomain.ps1' -Encoding ascii -Force
+Invoke-RestMethod https://raw.githubusercontent.com/bwhetstonestdbev/osdcloud/refs/heads/main/PostDeploy.ps1 | Out-File -FilePath 'C:\Users\Public\Desktop\PostDeploy.ps1' -Encoding ascii -Force
 
-#Write-Host -ForegroundColor Green "Create C:\ProgramData\OSDeploy\OSDeploy.AutopilotOOBE.json"
-#$AutopilotOOBEJson = @"
-#{
-#    "AssignedComputerName" : "",
-#    "AddToGroup":  "Autopilot - Device - Staff Shared Win11",
-#    "Assign":  {
-#                   "IsPresent":  true
-#               },
-#    "GroupTag":  "Staff",
-#    "Hidden":  [
-#                   "AddToGroup",
-#                   "AssignedUser",
-#                   "PostAction",
-#                   "GroupTag",
-#                   "Assign",
-#                   "Docs"
-#               ],
-#    "PostAction":  "Restart",
-#    "Run":  "NetworkingWireless",
-#    "Title":  "CEC Autopilot Manual Register"
-#}
-#"@
-#
-#If (!(Test-Path "C:\ProgramData\OSDeploy")) {
-#   New-Item "C:\ProgramData\OSDeploy" -ItemType Directory -Force | Out-Null
-#}
-#$AutopilotOOBEJson | Out-File -FilePath "C:\ProgramData\OSDeploy\OSDeploy.AutopilotOOBE.json" -Encoding ascii -Force
-
-#================================================
-#  [PostOS] OOBE CMD Command Line
-#================================================
-#Invoke-RestMethod https://raw.githubusercontent.com/caseydaviscec/osdcloud/main/Set-LenovoAssetTag.ps1 | Out-File -FilePath 'C:\Windows\Setup\scripts\set-lenovoassettag.ps1' -Encoding ascii -Force
-Invoke-RestMethod https://raw.githubusercontent.com/bwhetstonestdbev/osdcloud/refs/heads/main/Rename-Computer.ps1 | Out-File -FilePath 'C:\Windows\Setup\scripts\rename-computer.ps1' -Encoding ascii -Force
-Invoke-RestMethod https://raw.githubusercontent.com/bwhetstonestdbev/osdcloud/refs/heads/main/DisableOOBE.ps1 | Out-File -FilePath 'C:\Windows\Setup\scripts\DisableOOBE.ps1' -Encoding ascii -Force
-#Invoke-RestMethod https://raw.githubusercontent.com/bwhetstonestdbev/osdcloud/refs/heads/main/JoinDomain.ps1 | Out-File -FilePath 'C:\Windows\Setup\scripts\JoinDomain.ps1' -Encoding ascii -Force
-#Invoke-RestMethod https://raw.githubusercontent.com/bwhetstonestdbev/osdcloud/refs/heads/main/CreateLocalAdmin.ps1 | Out-File -FilePath 'C:\Windows\Setup\scripts\CreateLocalAdmin.ps1' -Encoding ascii -Force
-#Invoke-RestMethod https://raw.githubusercontent.com/caseydaviscec/osdcloud/refs/heads/main/Autopilot.ps1 | Out-File -FilePath 'C:\Windows\Setup\scripts\autopilot.ps1' -Encoding ascii -Force
-#Invoke-RestMethod https://raw.githubusercontent.com/caseydaviscec/osdcloud/refs/heads/main/Set-LenovoBios.ps1 | Out-File -FilePath 'C:\Windows\Setup\scripts\set-lenovobios.ps1' -Encoding ascii -Force
-#$OOBECMD = @'
-#@echo off
-
-# Prompt for setting Lenovo Asset Tag
-#start /wait powershell.exe -NoL -ExecutionPolicy Bypass -F C:\Windows\Setup\Scripts\set-lenovoassettag.ps1
-
-
-# Below a PS session for debug and testing in system context, # when not needed 
-# start /wait powershell.exe -NoL -ExecutionPolicy Bypass
-
-#exit 
-#'@
-#$OOBECMD | Out-File -FilePath 'C:\Windows\Setup\scripts\oobe.cmd' -Encoding ascii -Force
-
-#================================================
-#  [PostOS] SetupComplete CMD Command Line
-#================================================
 Write-Host -ForegroundColor Green "Create C:\Windows\Setup\Scripts\SetupComplete.cmd"
 $SetupCompleteCMD = @'
-powershell.exe -NoL -ExecutionPolicy Bypass -F C:\Windows\Setup\Scripts\rename-computer.ps1 
+powershell.exe -NoL -C Start-OOBEDeploy
+powershell.exe -NoL -ExecutionPolicy Bypass -F C:\Windows\Setup\Scripts\JoinDomain.ps1 
 '@
 $SetupCompleteCMD | Out-File -FilePath 'C:\Windows\Setup\Scripts\SetupComplete.cmd' -Encoding ascii -Force
 
-<#
 $UnattendXml = @'
 <?xml version="1.0" encoding="utf-8"?>
 <unattend xmlns="urn:schemas-microsoft-com:unattend">
-    <settings pass="specialize">
-        <component name="Microsoft-Windows-Deployment" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-            <RunSynchronous>
-                <RunSynchronousCommand wcm:action="add">
-                    <Order>1</Order>
-                    <Description>Join Computer to STDBEV.Com Domain</Description>
-                    <Path>PowerShell -ExecutionPolicy Bypass C:\OSDCloud\Scripts\SetupComplete\JoinDomain.ps1</Path>
-                </RunSynchronousCommand>
-            </RunSynchronous>
+    <settings pass="oobeSystem">
+        <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="NonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <AutoLogon>
+                <Password>
+                    <Value>UABAAHMAcwB3ADAAcgBkAFAAYQBzAHMAdwBvAHIAZAA=</Value>
+                    <PlainText>false</PlainText>
+                </Password>
+                <Enabled>true</Enabled>
+                <Username>SBCAdmin</Username>
+            </AutoLogon>
+            <DesktopOptimization>
+                <ShowWindowsStoreAppsOnTaskbar>false</ShowWindowsStoreAppsOnTaskbar>
+            </DesktopOptimization>
+            <OOBE>
+                <HideEULAPage>true</HideEULAPage>
+                <HideLocalAccountScreen>true</HideLocalAccountScreen>
+                <HideOEMRegistrationScreen>true</HideOEMRegistrationScreen>
+                <HideOnlineAccountScreens>true</HideOnlineAccountScreens>
+                <HideWirelessSetupInOOBE>true</HideWirelessSetupInOOBE>
+                <NetworkLocation>Work</NetworkLocation>
+                <ProtectYourPC>3</ProtectYourPC>
+            </OOBE>
+            <UserAccounts>
+                <AdministratorPassword>
+                    <Value>QQBkAG0AaQBuAGkAcwB0AHIAYQB0AG8AcgBQAGEAcwBzAHcAbwByAGQA</Value>
+                    <PlainText>false</PlainText>
+                </AdministratorPassword>
+                <LocalAccounts>
+                    <LocalAccount wcm:action="add">
+                        <Password>
+                            <Value>UABAAHMAcwB3ADAAcgBkAFAAYQBzAHMAdwBvAHIAZAA=</Value>
+                            <PlainText>false</PlainText>
+                        </Password>
+                        <Name>SBCAdmin</Name>
+                        <Group>Administrators</Group>
+                        <DisplayName>SBCAdmin</DisplayName>
+                        <Description>Local SBC Administrator</Description>
+                    </LocalAccount>
+                </LocalAccounts>
+            </UserAccounts>
         </component>
-            <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
-                <UserAccounts>
-                    <LocalAccounts>
-                        <LocalAccount wcm:action="add">
-                            <Name>Admin</Name>
-                                <DisplayName>SBCAdmin</DisplayName>
-                                    <Group>Administrators</Group>
-                                        <Password>
-                                            <Value>UABAAHMAcwB3ADAAcgBkAFAAYQBzAHMAdwBvAHIAZAA=</Value>
-                                            <PlainText>false</PlainText>
-                                        </Password>
-                        </LocalAccount>
-                    </LocalAccounts>
-                </UserAccounts>
-                <AutoLogon>
-                    <Username>Admin</Username>
-                        <Enabled>true</Enabled>
-                            <LogonCount>1</LogonCount>
-                                <Password>
-                                    <Value>UABAAHMAcwB3ADAAcgBkAFAAYQBzAHMAdwBvAHIAZAA=</Value>
-                                    <PlainText>false</PlainText>
-                                </Password>
-                </AutoLogon>
-                <OOBE>
-                    <ProtectYourPC>3</ProtectYourPC>
-                    <HideEULAPage>true</HideEULAPage>
-                    <HideWirelessSetupInOOBE>true</HideWirelessSetupInOOBE>
-                    <HideOnlineAccountScreens>true</HideOnlineAccountScreens>
-                </OOBE>
-            <FirstLogonCommands>
-                <SynchronousCommand wcm:action="add">
-                    <Order>1</Order>
-                        <CommandLine>powershell.exe -WindowStyle Normal -NoProfile -Command "Get-Content -LiteralPath 'C:\Windows\Setup\Scripts\FirstLogon.ps1' -Raw | Invoke-Expression;"</CommandLine>
-                </SynchronousCommand>
-            </FirstLogonCommands>
+        <component name="Microsoft-Windows-International-Core" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <InputLocale>0409:00000409</InputLocale>
+            <SystemLocale>en-us</SystemLocale>
+            <UILanguage>en-us</UILanguage>
+            <UserLocale>en-us</UserLocale>
         </component>
     </settings>
+    <cpi:offlineImage cpi:source="wim://sbcitutil1/osdcloud/install.wim#Windows 11 Pro" xmlns:cpi="urn:schemas-microsoft-com:cpi" />
 </unattend>
 '@
 
@@ -223,39 +171,8 @@ if (-NOT (Test-Path 'C:\Windows\Panther')) {
 $Panther = 'C:\Windows\Panther'
 $UnattendPath = "$Panther\Unattend.xml"
 $UnattendXml | Out-File -FilePath $UnattendPath -Encoding utf8 -Width 2000 -Force
-#>
-Write-Host "Copying USB Drive Scripts"
-Copy-Item X:\OSDCloud\Config\Scripts C:\OSDCloud\ -Recurse -Force
 
-#=======================================================================
-#   Restart-Computer
-#=======================================================================
-Write-Host  -ForegroundColor Green "Restarting in 20 seconds!"
-Start-Sleep -Seconds 20
-wpeutil reboot
+Copy-Item X:\OSDCloud\Config\Scripts\Name.txt C:\OSDCloud\Scripts -Force
+Copy-Item X:\OSDCloud\Config\Scripts\pass.txt C:\OSDCloud\Scripts -Force
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Restart-Computer
