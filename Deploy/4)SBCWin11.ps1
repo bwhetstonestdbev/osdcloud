@@ -87,7 +87,7 @@ $OOBEDeployJson = @'
                     "Microsoft.ZuneVideo"
                    ],
     "UpdateDrivers":  {
-                          "IsPresent":  true
+                          "IsPresent":  false
                       },
     "UpdateWindows":  {
                           "IsPresent":  true
@@ -179,4 +179,5 @@ Copy-Item X:\OSDCloud\Config\Scripts\Name.txt C:\OSDCloud\Scripts -Force
 Copy-Item X:\OSDCloud\Config\Scripts\pass.txt C:\OSDCloud\Scripts -Force
 
 Restart-Computer
+
 
