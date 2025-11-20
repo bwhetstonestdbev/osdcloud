@@ -100,7 +100,7 @@ If (!(Test-Path "C:\ProgramData\OSDeploy")) {
 $OOBEDeployJson | Out-File -FilePath "C:\ProgramData\OSDeploy\OSDeploy.OOBEDeploy.json" -Encoding ascii -Force
 
 Invoke-RestMethod https://raw.githubusercontent.com/bwhetstonestdbev/osdcloud/refs/heads/main/JoinDomain.ps1 | Out-File -FilePath 'C:\Windows\Setup\scripts\JoinDomain.ps1' -Encoding ascii -Force
-Invoke-RestMethod https://raw.githubusercontent.com/bwhetstonestdbev/osdcloud/refs/heads/main/PostDeploy.ps1 | Out-File -FilePath 'C:\Users\Public\Desktop\PostDeploy.ps1' -Encoding ascii -Force
+Invoke-RestMethod https://raw.githubusercontent.com/bwhetstonestdbev/osdcloud/refs/heads/main/PostDeploy.ps1 | Out-File -FilePath 'C:\Windows\Setup\scripts\PostDeploy.ps1' -Encoding ascii -Force
 
 Write-Host -ForegroundColor Green "Create C:\Windows\Setup\Scripts\SetupComplete.cmd"
 $SetupCompleteCMD = @'
@@ -175,9 +175,20 @@ $Panther = 'C:\Windows\Panther'
 $UnattendPath = "$Panther\Unattend.xml"
 $UnattendXml | Out-File -FilePath $UnattendPath -Encoding utf8 -Width 2000 -Force
 
+$Batch = @'
+@echo off
+powershell -NoProfile -ExecutionPolicy Bypass -File "C:\Windows\Setup\scripts\PostDeploy.ps1"
+pause
+'@
+
+$BatchLoc = 'C:\Users\Public\Desktop'
+$BatchPath = "$BatchLoc\run.bat"
+$Batch | Out-File -FilePath $BatchPath -Encoding utf8 -Width 2000 -Force
+
 Copy-Item X:\OSDCloud\Config\Scripts\Name.txt C:\OSDCloud\Scripts -Force
 Copy-Item X:\OSDCloud\Config\Scripts\pass.txt C:\OSDCloud\Scripts -Force
 
 Restart-Computer
+
 
 
