@@ -57,19 +57,25 @@ finally {
 #Install Cisco VPN
 Start-Process msiexec.exe -ArgumentList '/i "C:\Installers\cisco-secure-client-win-5.1.4.74-core-vpn-predeploy-k9.msi" /qn /norestart' -Wait 
 
+#Copy Cisco VPN Preferences
+Copy-Item "C:\Installers\Profiles\preferences.xml" -Destination "C:\ProgramData\Cisco\Cisco Secure Client\VPN\Profile" 
+
 
 #Install Chrome
 Start-Process msiexec.exe -ArgumentList '/i "C:\Installers\GoogleChromeStandaloneEnterprise64.msi" /qn' -Wait
 
+#Install Dell Command Update
+Start-Process msiexec.exe -ArgumentList '/i "C:\DellCommandUpdateApp.msi" /qn' -Wait
 
-#Copy Cisco VPN Preferences
-Copy-Item "C:\Installers\Profiles\preferences.xml" -Destination "C:\ProgramData\Cisco\Cisco Secure Client\VPN\Profile" 
+#Install Teams
+Start-Process -FilePath "C:\Installers\teamsbootstrapper.exe" -ArgumentList "-p" -Wait
+
 
 #Install Javescript
-Start-Process -FilePath "C:\Installers\jre-8u471-windows-x64.exe" -ArgumentList "/s"
+Start-Process -FilePath "C:\Installers\jre-8u471-windows-x64.exe" -ArgumentList "/s" -Wait
 
 #Install ASW
-Start-Process -FilePath "C:\Installers\IBMiAccess_v1r1\Windows_Application\install_acs_32_allusers.js"
+Start-Process -FilePath "C:\Installers\IBMiAccess_v1r1\Windows_Application\install_acs_32_allusers.js" -Wait
 Move-Item -Path "C:\Users\Public\Desktop\Access Client Solutions.lnk" -Destination "C:\"
 Move-Item -Path "C:\Users\Public\Desktop\ACS Session Mgr.lnk" -Destination "C:\"
 
@@ -88,7 +94,8 @@ Remove-Item -Path "C:\Windows\Panther\unattend.xml"
 Remove-Item -Path "C:\Windows\Setup\Scripts\JoinDomain.ps1"
 Remove-Item -Path "C:\Users\Public\Desktop\PostDeploy.ps1"
 
-Restart-Computer
+#Restart-Computer
+
 
 
 
