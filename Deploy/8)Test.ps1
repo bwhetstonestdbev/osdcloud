@@ -104,6 +104,7 @@ Invoke-RestMethod https://raw.githubusercontent.com/bwhetstonestdbev/osdcloud/re
 
 Write-Host -ForegroundColor Green "Create C:\Windows\Setup\Scripts\SetupComplete.cmd"
 $SetupCompleteCMD = @'
+powershell.exe -NoL -C Start-OOBEDeploy
 powershell.exe -NoL -ExecutionPolicy Bypass -F C:\Windows\Setup\Scripts\JoinDomain.ps1 
 '@
 $SetupCompleteCMD | Out-File -FilePath 'C:\Windows\Setup\Scripts\SetupComplete.cmd' -Encoding ascii -Force
