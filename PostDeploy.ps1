@@ -5,7 +5,7 @@
 #=================================
 # Create Credentials for Application Deployment
 #=================================
-$username = "stdbev.com\intune.dem"
+$username = "stdbev.com/intune.dem"
 $pass = 'C:\OSDCloud\Scripts\pass.txt' 
 $credentials = New-Object System.Management.Automation.PSCredential -ArgumentList $username, (Get-Content $pass | ConvertTo-SecureString -AsPlainText -Force)
 
@@ -98,6 +98,7 @@ Remove-Item -Path "C:\Windows\Setup\Scripts\JoinDomain.ps1"
 Remove-Item -Path "C:\Users\Public\Desktop\PostDeploy.ps1"
 
 Restart-Computer
+
 
 
 
