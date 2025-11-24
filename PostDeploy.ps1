@@ -74,7 +74,7 @@ Start-Process msiexec.exe -ArgumentList '/i "C:\Installers\GoogleChromeStandalon
 Start-Process msiexec.exe -ArgumentList '/i "C:\Installers\AcroRdrDC2500120844_en_US\AcroRead.msi" /qn' -Wait
 
 #Install Dell Command Update
-Start-Process msiexec.exe -ArgumentList '/i "C:\DellCommandUpdateApp.msi" /qn' -Wait
+Start-Process msiexec.exe -ArgumentList '/i "C:\Installers\DellCommandUpdateApp.msi" /qn' -Wait
 
 #Install Teams
 Start-Process -FilePath "C:\Installers\teamsbootstrapper.exe" -ArgumentList "-p" -Wait
@@ -107,6 +107,7 @@ Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\WinLo
 
 Stop-Transcript
 #Restart-Computer
+
 
 
 
