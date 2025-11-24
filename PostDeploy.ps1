@@ -79,8 +79,10 @@ Start-Process msiexec.exe -ArgumentList '/i "C:\DellCommandUpdateApp.msi" /qn' -
 #Install Teams
 Start-Process -FilePath "C:\Installers\teamsbootstrapper.exe" -ArgumentList "-p" -Wait
 
+#Install JRE 32-bit
+Start-Process -FilePath "C:\Installers\jre-8u471-windows-i586.exe" -ArgumentList "/s" -Wait
 
-#Install Javescript
+#Install JRE 64-bit
 Start-Process -FilePath "C:\Installers\jre-8u471-windows-x64.exe" -ArgumentList "/s" -Wait
 
 #Install ASW
@@ -105,6 +107,7 @@ Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\WinLo
 
 Stop-Transcript
 #Restart-Computer
+
 
 
 
