@@ -64,6 +64,9 @@ Copy-Item "C:\Installers\Profiles\preferences.xml" -Destination "C:\ProgramData\
 #Install Chrome
 Start-Process msiexec.exe -ArgumentList '/i "C:\Installers\GoogleChromeStandaloneEnterprise64.msi" /qn' -Wait
 
+#Install Acrobat Reader
+Start-Process msiexec.exe -ArgumentList '/i "C:\Installers\AcroRdrDC2500120844_en_US\AcroRead.msi" /qn' -Wait
+
 #Install Dell Command Update
 Start-Process msiexec.exe -ArgumentList '/i "C:\DellCommandUpdateApp.msi" /qn' -Wait
 
@@ -75,7 +78,7 @@ Start-Process -FilePath "C:\Installers\teamsbootstrapper.exe" -ArgumentList "-p"
 Start-Process -FilePath "C:\Installers\jre-8u471-windows-x64.exe" -ArgumentList "/s" -Wait
 
 #Install ASW
-Start-Process -FilePath "C:\Installers\IBMiAccess_v1r1\Windows_Application\install_acs_32_allusers.js" -Wait
+Start-Process -FilePath "\\sbcitutil1\IT\ASW\!!AccessClientSolutionsBase\IBMiAccess_v1r1\Windows_Application\install_acs_32_allusers.js" -Credential $credentials -Wait
 Move-Item -Path "C:\Users\Public\Desktop\Access Client Solutions.lnk" -Destination "C:\"
 Move-Item -Path "C:\Users\Public\Desktop\ACS Session Mgr.lnk" -Destination "C:\"
 
@@ -95,6 +98,7 @@ Remove-Item -Path "C:\Windows\Setup\Scripts\JoinDomain.ps1"
 Remove-Item -Path "C:\Users\Public\Desktop\PostDeploy.ps1"
 
 Restart-Computer
+
 
 
 
