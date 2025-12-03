@@ -89,6 +89,7 @@ Start-Process -FilePath "C:\Installers\jre-8u471-windows-x64.exe" -ArgumentList 
 Start-Process -FilePath "C:\Installers\IBMiAccess_v1r1\Windows_Application\install_acs_32_allusers.js" -Wait
 Move-Item -Path "C:\Users\Public\Desktop\Access Client Solutions.lnk" -Destination "C:\"
 Move-Item -Path "C:\Users\Public\Desktop\ACS Session Mgr.lnk" -Destination "C:\"
+Move-Item -Path "C:\Installers\ASW.hod" -Destination "C:\Users\Public\Desktop"
 
 
 #=================================
@@ -107,6 +108,7 @@ Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\WinLo
 
 Stop-Transcript
 #Restart-Computer
+
 
 
 
