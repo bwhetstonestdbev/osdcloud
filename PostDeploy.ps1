@@ -11,7 +11,7 @@ $VerbosePreference = "Continue"
 #=================================
 # Create Credentials for Application Deployment
 #=================================
-$username = "stdbev.com/intune.dem"
+$username = 'intune.dem'
 $pass = 'C:\OSDCloud\Scripts\pass.txt' 
 $credentials = New-Object System.Management.Automation.PSCredential -ArgumentList $username, (Get-Content $pass | ConvertTo-SecureString -AsPlainText -Force)
 
@@ -107,6 +107,7 @@ Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\WinLo
 
 Stop-Transcript
 #Restart-Computer
+
 
 
 
