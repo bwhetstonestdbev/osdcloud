@@ -63,9 +63,11 @@ finally {
 #Install Cisco VPN
 Start-Process msiexec.exe -ArgumentList '/i "C:\Installers\cisco-secure-client-win-5.1.4.74-core-vpn-predeploy-k9.msi" /qn /norestart' -Wait 
 
+#Install .NET 8.0 Desktop Runtime (v8.0.22) for Dell Command Update
+Start-Process -FilePath "C:\Installers\windowsdesktop-runtime-8.0.22-win-x64.exe" -ArgumentList "/install /quiet" -Wait
+
 #Copy Cisco VPN Preferences
 Copy-Item "C:\Installers\Profiles\preferences.xml" -Destination "C:\ProgramData\Cisco\Cisco Secure Client\VPN\Profile" 
-
 
 #Install Chrome
 Start-Process msiexec.exe -ArgumentList '/i "C:\Installers\GoogleChromeStandaloneEnterprise64.msi" /qn' -Wait
@@ -101,13 +103,14 @@ Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\WinLo
 Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\WinLogon' -Name 'DefaultUserName' -Value "" -Force
 
 #Delete OSDCloud Directory and unattend.xml 
-#Remove-Item -Path "C:\OSDCloud" -Recurse
-#Remove-Item -Path "C:\Windows\Panther\unattend.xml"
-#Remove-Item -Path "C:\Windows\Setup\Scripts\JoinDomain.ps1"
-#Remove-Item -Path "C:\Users\Public\Desktop\PostDeploy.ps1"
+Remove-Item -Path "C:\OSDCloud" -Recurse
+Remove-Item -Path "C:\Windows\Panther\unattend.xml"
+Remove-Item -Path "C:\Windows\Setup\Scripts\JoinDomain.ps1"
+Remove-Item -Path "C:\Users\Public\Desktop\run.bat"
 
 Stop-Transcript
 #Restart-Computer
+
 
 
 
