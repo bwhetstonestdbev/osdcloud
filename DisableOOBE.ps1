@@ -1,2 +1,0 @@
-﻿Set-ItemProperty -Path "HKLM:SOFTWAREMicrosoftWindowsCurrentVersionSetupOOBE" -Name "SkipOOBE" -Value 1
-Set-ItemProperty -Path "HKLM:SOFTWAREMicrosoftWindowsCurrentVersionSetupPnpLockdown" -Name "DisableOOBE" -Value 1
