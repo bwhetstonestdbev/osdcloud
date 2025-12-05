@@ -88,10 +88,10 @@ Start-Process -FilePath "C:\Installers\jre-8u471-windows-i586.exe" -ArgumentList
 Start-Process -FilePath "C:\Installers\jre-8u471-windows-x64.exe" -ArgumentList "/s" -Wait
 
 #Install ProDiver
-Start-Process -FilePath "C:\Installers\Newest DivePack\ProDiver-Setup.exe" -ArgumentList "/s" -Wait
+Start-Process -FilePath "C:\Installers\Newest DivePack\ProDiver-Setup.exe" -ArgumentList "/S" -Wait
 
 #Install DiveTab
-Start-Process -FilePath "C:\Installers\Newest DivePack\DiveTab-Setup-7.1.40.exe" -ArgumentList "/s" -Wait
+Start-Process -FilePath "C:\Installers\Newest DivePack\DiveTab-Setup-7.1.40.exe" -ArgumentList "/S" -Wait
 
 #Install ASW
 Start-Process -FilePath "C:\Installers\IBMiAccess_v1r1\Windows_Application\install_acs_32_allusers.js" -Wait
@@ -118,6 +118,7 @@ Remove-Item -Path "C:\Users\Public\Desktop\run.bat"
 
 Stop-Transcript
 #Restart-Computer
+
 
 
 
