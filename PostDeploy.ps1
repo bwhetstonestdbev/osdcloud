@@ -57,6 +57,15 @@ finally {
 }
 
 #=================================
+# Create AppDate Directory for Diver .ini and move files over
+#=================================
+
+New-Item -Path "C:\Users\Default\VirtualStore\Windows" -ItemType Directory
+Move-Item -Path "C:\Installers\Newest DivePack\diver.ini" -Destination "C:\Users\Default\VirtualStore\Windows"
+Move-Item -Path "C:\Installers\Newest DivePack\diver-default.tpl" -Destination "C:\Users\Default\VirtualStore\Windows"
+
+
+#=================================
 # Install Applications
 #=================================
 
@@ -95,6 +104,8 @@ Start-Process -FilePath "C:\Installers\Newest DivePack\DiveTab-Setup-7.1.40.exe"
 
 #Install ASW
 Start-Process -FilePath "C:\Installers\IBMiAccess_v1r1\Windows_Application\install_acs_32_allusers.js" -Wait
+
+#Copy ASW shortcuts to C: drive, copy .hod file to Public Desktop
 Move-Item -Path "C:\Users\Public\Desktop\Access Client Solutions.lnk" -Destination "C:\"
 Move-Item -Path "C:\Users\Public\Desktop\ACS Session Mgr.lnk" -Destination "C:\"
 Move-Item -Path "C:\Installers\ASW.hod" -Destination "C:\Users\Public\Desktop"
@@ -118,6 +129,7 @@ Remove-Item -Path "C:\Users\Public\Desktop\run.bat"
 
 Stop-Transcript
 #Restart-Computer
+
 
 
 
