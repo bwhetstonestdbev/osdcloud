@@ -57,12 +57,12 @@ finally {
 }
 
 #=================================
-# Create AppDate Directory for Diver .ini and move files over
+# Create AppData Directory for Diver .ini and move files over
 #=================================
 
-New-Item -Path "C:\Users\Default\VirtualStore\Windows" -ItemType Directory
-Move-Item -Path "C:\Installers\Newest DivePack\diver.ini" -Destination "C:\Users\Default\VirtualStore\Windows"
-Move-Item -Path "C:\Installers\Newest DivePack\diver-default.tpl" -Destination "C:\Users\Default\VirtualStore\Windows"
+New-Item -Path "C:\Users\Default\AppData\Local\VirtualStore\Windows" -ItemType Directory
+Move-Item -Path "C:\Installers\Newest DivePack\diver.ini" -Destination "C:\Users\Default\AppData\Local\VirtualStore\Windows"
+Move-Item -Path "C:\Installers\Newest DivePack\diver-default.tpl" -Destination "C:\Users\Default\AppData\Local\VirtualStore\Windows"
 
 
 #=================================
@@ -129,6 +129,7 @@ Remove-Item -Path "C:\Users\Public\Desktop\run.bat"
 
 Stop-Transcript
 #Restart-Computer
+
 
 
 
