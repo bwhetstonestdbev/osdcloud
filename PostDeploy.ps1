@@ -70,42 +70,66 @@ Move-Item -Path "C:\Installers\Newest DivePack\diver-default.tpl" -Destination "
 #=================================
 
 #Install Cisco VPN
+Write-Host "`nStarting Cisco VPN Install..."
 Start-Process msiexec.exe -ArgumentList '/i "C:\Installers\cisco-secure-client-win-5.1.4.74-core-vpn-predeploy-k9.msi" /qn /norestart' -Wait 
-
-#Install .NET 8.0 Desktop Runtime (v8.0.22) for Dell Command Update
-Start-Process -FilePath "C:\Installers\windowsdesktop-runtime-8.0.22-win-x64.exe" -ArgumentList "/install /quiet" -Wait
+Write-Host "`nCisco VPN Install Finished"
 
 #Copy Cisco VPN Preferences
+Write-Host "`nCopying Cisco VPN Prefrences"
 Copy-Item "C:\Installers\Profiles\preferences.xml" -Destination "C:\ProgramData\Cisco\Cisco Secure Client\VPN\Profile" 
 
+#Install .NET 8.0 Desktop Runtime (v8.0.22) for Dell Command Update
+Write-Host "`nStarting .NET 8.0 Desktop Runtime Install..."
+Start-Process -FilePath "C:\Installers\windowsdesktop-runtime-8.0.22-win-x64.exe" -ArgumentList "/install /quiet" -Wait
+Write-Host "`n.NET 8.0 Desktop Runtime Install Finished"
+
 #Install Chrome
+Write-Host "`nStarting Google Chrome Install..."
 Start-Process msiexec.exe -ArgumentList '/i "C:\Installers\GoogleChromeStandaloneEnterprise64.msi" /qn' -Wait
+Write-Host "`nGoogle Chrome Install Finished"
 
 #Install Acrobat Reader
+Write-Host "`nStarting Adobe Acrobat Install..."
 Start-Process msiexec.exe -ArgumentList '/i "C:\Installers\AcroRdrDC2500120844_en_US\AcroRead.msi" /qn' -Wait
+Write-Host "`nAdobe Acrobat Install Finished"
 
 #Install Dell Command Update
+Write-Host "`nStarting Dell Commabd Update Install..."
 Start-Process msiexec.exe -ArgumentList '/i "C:\Installers\DellCommandUpdateApp.msi" /qn' -Wait
+Write-Host "`nDell Command Update Install Finished"
 
 #Install Teams
+Write-Host "`nStarting Microsoft Teams Install..."
 Start-Process -FilePath "C:\Installers\teamsbootstrapper.exe" -ArgumentList "-p" -Wait
+Write-Host "`nMicrosot Teams Install Finished"
 
 #Install JRE 32-bit
+Write-Host "`nStarting Java RE 32-bit Install..."
 Start-Process -FilePath "C:\Installers\jre-8u471-windows-i586.exe" -ArgumentList "/s" -Wait
+Write-Host "`nJava RE 32-bit Install Finished"
 
 #Install JRE 64-bit
+Write-Host "`nStarting Java RE 64-bit Install..."
 Start-Process -FilePath "C:\Installers\jre-8u471-windows-x64.exe" -ArgumentList "/s" -Wait
+Write-Host "`nJava RE 32-bit Install Finished"
 
 #Install ProDiver
+Write-Host "`nStarting ProDiver Install..."
 Start-Process -FilePath "C:\Installers\Newest DivePack\ProDiver-Setup.exe" -ArgumentList "/S" -Wait
+Write-Host "`nProDiver Install Finished"
 
 #Install DiveTab
+Write-Host "`nStarting DiveTab Install..."
 Start-Process -FilePath "C:\Installers\Newest DivePack\DiveTab-Setup-7.1.40.exe" -ArgumentList "/S" -Wait
+Write-Host "`nDiveTab Install Finished"
 
 #Install ASW
+Write-Host "`nStarting ASW Install..."
 Start-Process -FilePath "C:\Installers\IBMiAccess_v1r1\Windows_Application\install_acs_32_allusers.js" -Wait
+Write-Host "`nASWInstall Finished"
 
 #Copy ASW shortcuts to C: drive, copy .hod file to Public Desktop
+Write-Host "`nMoving ASW shortcuts"
 Move-Item -Path "C:\Users\Public\Desktop\Access Client Solutions.lnk" -Destination "C:\"
 Move-Item -Path "C:\Users\Public\Desktop\ACS Session Mgr.lnk" -Destination "C:\"
 Move-Item -Path "C:\Installers\ASW.hod" -Destination "C:\Users\Public\Desktop"
@@ -129,6 +153,7 @@ Remove-Item -Path "C:\Users\Public\Desktop\run.bat"
 
 Stop-Transcript
 #Restart-Computer
+
 
 
 
