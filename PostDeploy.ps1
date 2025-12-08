@@ -128,10 +128,15 @@ Write-Host "`nStarting ASW Install..."
 Start-Process -FilePath "C:\Installers\IBMiAccess_v1r1\Windows_Application\install_acs_32_allusers.js" -Wait
 Write-Host "`nASWInstall Finished"
 
-#Copy ASW shortcuts to C: drive, copy .hod file to Public Desktop
+#Copy ASW shortcuts to C: drive
 Write-Host "`nMoving ASW shortcuts"
 Move-Item -Path "C:\Users\Public\Desktop\Access Client Solutions.lnk" -Destination "C:\"
 Move-Item -Path "C:\Users\Public\Desktop\ACS Session Mgr.lnk" -Destination "C:\"
+
+#Remove Desktop Shortcuts from Public
+Remove-Item -Path 'C:\Users\Public\Desktop\*' -Recurse
+
+#Put .hod shortcut for ASW on desktop
 Move-Item -Path "C:\Installers\ASW.hod" -Destination "C:\Users\Public\Desktop"
 
 
@@ -147,12 +152,13 @@ Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\WinLo
 Remove-Item -Path "C:\OSDCloud" -Recurse
 Remove-Item -Path "C:\Installers" -Recurse
 Remove-Item -Path "C:\Windows\Panther\unattend.xml"
-Remove-Item -Path "C:\Windows\Setup\Scripts\JoinDomain.ps1"
+Remove-Item -Path "C:\Windows\Setup\Scripts\PreDeploy.ps1"
 Remove-Item -Path "C:\Windows\Setup\Scripts\PostDeploy.ps1"
 Remove-Item -Path "C:\Users\Public\Desktop\run.bat"
 
 Stop-Transcript
 #Restart-Computer
+
 
 
 
