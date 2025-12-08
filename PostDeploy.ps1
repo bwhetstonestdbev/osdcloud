@@ -167,7 +167,8 @@ Remove-Item -Path "C:\Windows\Setup\Scripts\PostDeploy.ps1"
 Remove-Item -Path "C:\Users\Public\Desktop\run.bat"
 
 Stop-Transcript
-#Restart-Computer
+Restart-Computer
+
 
 
 
