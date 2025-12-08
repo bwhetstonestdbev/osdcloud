@@ -5,7 +5,7 @@ Start-Transcript -Path $logFile -NoClobber
 $VerbosePreference = "Continue"
 
 #=================================
-#Post Image Deploy Cleanup
+# Script to install software and delete files needed for imaging
 #=================================
 
 #=================================
@@ -168,6 +168,7 @@ Remove-Item -Path "C:\Users\Public\Desktop\run.bat"
 
 Stop-Transcript
 Restart-Computer
+
 
 
 
