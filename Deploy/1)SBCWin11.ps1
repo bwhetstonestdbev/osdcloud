@@ -16,6 +16,7 @@ $firstNameTrim = $firstName[0]
     else {$lastNameTrim = $lastName}
     $nameUpper = ("$firstNameTrim$lastNameTrim").ToUpper()
     $nameUpper | Out-File -FilePath "X:\OSDCloud\Config\Scripts\Name.txt" -Encoding ascii -Force
+    $user | Out-File -FilePath "X:\OSDCloud\Config\Scripts\uname.txt" -Encoding ascii -Force
     
 Write-Output "Co-worker name within computer name will be: $nameUpper"
 
@@ -188,8 +189,10 @@ $Batch | Out-File -FilePath $BatchPath -Encoding utf8 -Width 2000 -Force
 
 Copy-Item X:\OSDCloud\Config\Scripts\Name.txt C:\OSDCloud\Scripts -Force
 Copy-Item X:\OSDCloud\Config\Scripts\pass.txt C:\OSDCloud\Scripts -Force
+Copy-Item X:\OSDCloud\Config\Scripts\uname.txt C:\OSDCloud\Scripts -Force
 
 Restart-Computer
+
 
 
 
