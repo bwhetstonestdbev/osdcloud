@@ -99,7 +99,7 @@ If (!(Test-Path "C:\ProgramData\OSDeploy")) {
 }
 $OOBEDeployJson | Out-File -FilePath "C:\ProgramData\OSDeploy\OSDeploy.OOBEDeploy.json" -Encoding ascii -Force
 
-Invoke-RestMethod https://raw.githubusercontent.com/bwhetstonestdbev/osdcloud/refs/heads/main/JoinDomain.ps1 | Out-File -FilePath 'C:\Windows\Setup\scripts\JoinDomain.ps1' -Encoding ascii -Force
+Invoke-RestMethod https://raw.githubusercontent.com/bwhetstonestdbev/osdcloud/refs/heads/main/PreDeploy.ps1 | Out-File -FilePath 'C:\Windows\Setup\scripts\PreDeploy.ps1' -Encoding ascii -Force
 Invoke-RestMethod https://raw.githubusercontent.com/bwhetstonestdbev/osdcloud/refs/heads/main/PostDeploy.ps1 | Out-File -FilePath 'C:\Windows\Setup\scripts\PostDeploy.ps1' -Encoding ascii -Force
 
 Write-Host -ForegroundColor Green "Create C:\Windows\Setup\Scripts\SetupComplete.cmd"
@@ -109,7 +109,7 @@ Set Path = %PATH%;C:\Program Files\WindowsPowerShell\Scripts
 Start /Wait PowerShell -NoL -C Install-Module AutopilotOOBE -Force -Verbose
 Start /Wait PowerShell -NoL -C Install-Module OSD -Force -Verbose
 Start /Wait PowerShell -NoL -C Start-OOBEDeploy
-powershell.exe -NoL -ExecutionPolicy Bypass -F C:\Windows\Setup\Scripts\JoinDomain.ps1 
+powershell.exe -NoL -ExecutionPolicy Bypass -F C:\Windows\Setup\Scripts\PreDeploy.ps1 
 '@
 $SetupCompleteCMD | Out-File -FilePath 'C:\Windows\Setup\Scripts\SetupComplete.cmd' -Encoding ascii -Force
 
@@ -190,6 +190,7 @@ Copy-Item X:\OSDCloud\Config\Scripts\Name.txt C:\OSDCloud\Scripts -Force
 Copy-Item X:\OSDCloud\Config\Scripts\pass.txt C:\OSDCloud\Scripts -Force
 
 Restart-Computer
+
 
 
 
