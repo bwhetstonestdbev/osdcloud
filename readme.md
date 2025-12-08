@@ -13,7 +13,7 @@ PowerShell scripts and resources for deploying Windows 11 images using OSDCloud.
 
 | Version No.               | Description                                                       | Date            |
 |----------------------------|-------------------------------------------------------------------------------------------------------|-------------------|
-| `1.01`            | -`Added user default settings (taskbar on the left)' -'checks to see if computer already on domain.`                   |  `12/08/2025`     |
+| `1.01`            | - `Added user default settings (taskbar on the left)checks to see if computer already on domain.`                   |  `12/08/2025`     |
 | `1.00`  | `Initial Windows 11 deployment with AD join and basic software installation.`                                                              |   `12/01/2025`  |    
 
 ## Related Documentation
