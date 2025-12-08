@@ -28,6 +28,16 @@ slmgr //b /ipk $key
 Set-TimeZone -Name 'Central Standard Time'
 
 #=================================
+# Update AD Description with co-worker name and image timestamp
+#=================================
+$computerName = $env:COMPUTERNAME
+$timestamp = Get-Date -Format "MM/dd/yyyy"
+$name = 'C:\OSDCloud\Scripts\uname.txt'
+
+$description = $name + ' imaged on ' + $timestamp
+Set-ADComputer -Identity $computerName -Description $description
+
+#=================================
 # Copy Installers To Local Machine
 #=================================
 $installerPath = 'C:\Installers'
@@ -158,6 +168,7 @@ Remove-Item -Path "C:\Users\Public\Desktop\run.bat"
 
 Stop-Transcript
 #Restart-Computer
+
 
 
 
