@@ -31,7 +31,7 @@ $Serial = Get-WmiObject Win32_bios | Select-Object -ExpandProperty SerialNumber
 $computerName = $Serial + '-' + $input
 
 #########################
-# See if computet exists in AD. If it does, remove it.
+# See if computer exists in AD. If it does, remove it.
 #########################
 $organizationalUnit = "OU=Computers - STDBEV,DC=stdbev,DC=com"
 
@@ -52,6 +52,7 @@ if ($computer) {
 Add-Computer -DomainName stdbev.com -Credential $Creds -OUPath $organizationalUnit -NewName $computerName -Force -Restart
 
 Stop-Transcript
+
 
 
 
