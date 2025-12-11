@@ -37,7 +37,7 @@ $data = @(
         $name = 'C:\OSDCloud\Scripts\uname.txt'
     }    
 )
-$data | Export-Csv -Path "\\sbcdc01\c$\Scripts\AD Description Update\description_info.csv" -Credential $credentials
+$data | Export-Csv -Path "\\sbc365adsync01\c$\Scripts\update_ad_computer_descriptiondescription_info.csv" -Credential $credentials
 
 #=================================
 # Copy Installers To Local Machine
@@ -169,6 +169,7 @@ Remove-Item -Path "C:\Windows\Setup\Scripts\PostDeploy.ps1"
 
 Stop-Transcript
 Restart-Computer
+
 
 
 
