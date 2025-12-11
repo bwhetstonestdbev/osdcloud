@@ -28,14 +28,16 @@ slmgr //b /ipk $key
 Set-TimeZone -Name 'Central Standard Time'
 
 #=================================
-# Update AD Description with co-worker name and image timestamp
+# Create CSV to move to domain controller with information to update AD description
 #=================================
-$computerName = $env:COMPUTERNAME
-$timestamp = Get-Date -Format "MM/dd/yyyy"
-$name = 'C:\OSDCloud\Scripts\uname.txt'
-
-$description = $name + ' imaged on ' + $timestamp
-Set-ADComputer -Identity $computerName -Description $description
+$data = @(
+    [PSCustomObject]@{
+        $computerName = $env:COMPUTERNAME
+        $timestamp = Get-Date -Format "MM/dd/yyyy"
+        $name = 'C:\OSDCloud\Scripts\uname.txt'
+    }    
+)
+$data | Export-Csv -Path "\\sbcdc01\c$\Scripts\AD Description Update\description_info.csv" -Credential $credentials
 
 #=================================
 # Copy Installers To Local Machine
@@ -167,6 +169,7 @@ Remove-Item -Path "C:\Windows\Setup\Scripts\PostDeploy.ps1"
 
 Stop-Transcript
 Restart-Computer
+
 
 
 
