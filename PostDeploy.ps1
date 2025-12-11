@@ -164,10 +164,10 @@ Remove-Item -Path "C:\Installers" -Recurse
 Remove-Item -Path "C:\Windows\Panther\unattend.xml"
 Remove-Item -Path "C:\Windows\Setup\Scripts\PreDeploy.ps1"
 Remove-Item -Path "C:\Windows\Setup\Scripts\PostDeploy.ps1"
-Remove-Item -Path "C:\Users\Public\Desktop\run.bat"
 
 Stop-Transcript
 Restart-Computer
+
 
 
 
