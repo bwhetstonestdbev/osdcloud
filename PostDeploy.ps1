@@ -152,6 +152,14 @@ Remove-Item -Path 'C:\Users\Public\Desktop\*' -Recurse
 Move-Item -Path "C:\Installers\ASW.hod" -Destination "C:\Users\Public\Desktop"
 
 
+
+#=================================
+# Run command on remote server to apply flag to computer to install Splashtop
+#=================================
+
+Invoke-Command -ComputerName SBC365ADSYNC01 -FilePath C:\OSDCloud\UpdateExtAttribute.ps1 -Credential $Creds 
+
+
 #=================================
 # Post Deployment Clean Up
 #=================================
@@ -169,6 +177,7 @@ Remove-Item -Path "C:\Windows\Setup\Scripts\PostDeploy.ps1"
 
 Stop-Transcript
 Restart-Computer
+
 
 
 
