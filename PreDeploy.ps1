@@ -34,6 +34,8 @@ $Serial = Get-WmiObject Win32_bios | Select-Object -ExpandProperty SerialNumber
 $computerName = $Serial + '-' + $input
 $computerName | Out-File -FilePath "Q:\$computerName_log.txt" -Encoding ascii -Force
 
+Remove-PSDrive -Name Q
+
 #########################
 # See if computer exists in AD. If it does, remove it. Must run remote command on server with AD Powershell commands installed
 #########################
@@ -43,6 +45,7 @@ Invoke-Command -ComputerName SBC365ADSYNC01 -FilePath C:\OSDCloud\CheckADCompute
 Add-Computer -DomainName stdbev.com -Credential $Creds -OUPath $organizationalUnit -NewName $computerName -Force -Restart
 
 Stop-Transcript
+
 
 
 
