@@ -12,7 +12,7 @@ $VerbosePreference = "Continue"
 #########################
 $pass = Get-Content -Path $env:SystemDrive\OSDCloud\Scripts\pass.txt 
 $SecurePassword = ConvertTo-SecureString $pass -AsPlainText -Force
-$Creds = New-Object System.Management.Automation.PSCredential ("stdbev.com\intune.dem",$SecurePassword)
+$Creds = New-Object System.Management.Automation.PSCredential ("stdbev.com\sbc.imaging",$SecurePassword)
 
 #########################
 # Set Default Taskbar Settings
@@ -23,35 +23,27 @@ New-itemproperty "HKLM:\Default\Software\Microsoft\Windows\CurrentVersion\Explor
 REG UNLOAD HKLM\Default
 
 #########################
-# Create the computer name
+# Create the computer name and store it on ADSync Server so we can access it later
 #########################
+$sourcePath = "\\sbc365adsync01\OSDCloud\"
+New-PSDrive -Name "Q" -PSProvider FileSystem -Root $sourcePath -Credential $Creds -ErrorAction Stop
+
 $input = Get-Content -Path $env:SystemDrive\OSDCloud\Scripts\Name.txt
 Write-Host -ForegroundColor Red "Rename Computer before Domain Join"
 $Serial = Get-WmiObject Win32_bios | Select-Object -ExpandProperty SerialNumber
 $computerName = $Serial + '-' + $input
+$computerName | Out-File -FilePath "Q:\$computerName_log.txt" -Encoding ascii -Force
 
 #########################
-# See if computer exists in AD. If it does, remove it.
+# See if computer exists in AD. If it does, remove it. Must run remote command on server with AD Powershell commands installed
 #########################
-$organizationalUnit = "OU=Computers - STDBEV,DC=stdbev,DC=com"
 
-# Find the computer in the specific OU
-$computer = Get-ADComputer -Filter "Name -eq '$computerName'" -SearchBase $organizationalUnit
-
-# Check if computer exists and remove it
-if ($computer) {
-    Write-Host "Computer '$computerName' found. Removing from Active Directory..."
-    Remove-ADComputer -Identity $computer -Confirm:$false -Credential $Creds
-    Write-Host "`nComputer '$computerName' has been removed."
-    Write-Host "`nAdding computer '$computerName' to active directory."
-} else {
-    Write-Host "Computer '$computerName' not found in OU: $organizationalUnit"
-    Write-Host "`nAdding computer '$computerName' to active directory."
-}
+Invoke-Command -ComputerName SBC365ADSYNC01 -FilePath C:\OSDCloud\CheckADComputer.ps1 -Credential $Creds -Wait
 
 Add-Computer -DomainName stdbev.com -Credential $Creds -OUPath $organizationalUnit -NewName $computerName -Force -Restart
 
 Stop-Transcript
+
 
 
 
