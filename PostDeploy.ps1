@@ -11,7 +11,7 @@ $VerbosePreference = "Continue"
 #=================================
 # Create Credentials for Application Deployment
 #=================================
-$username = 'intune.dem'
+$username = 'sbc.imaging'
 $pass = 'C:\OSDCloud\Scripts\pass.txt' 
 $credentials = New-Object System.Management.Automation.PSCredential -ArgumentList $username, (Get-Content $pass | ConvertTo-SecureString -AsPlainText -Force)
 
@@ -169,6 +169,7 @@ Remove-Item -Path "C:\Windows\Setup\Scripts\PostDeploy.ps1"
 
 Stop-Transcript
 Restart-Computer
+
 
 
 
