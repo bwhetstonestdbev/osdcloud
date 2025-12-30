@@ -40,11 +40,12 @@ Remove-PSDrive -Name Q
 # See if computer exists in AD. If it does, remove it. Must run remote command on server with AD Powershell commands installed
 #########################
 
-Invoke-Command -ComputerName SBC365ADSYNC01 -FilePath C:\OSDCloud\CheckADComputer.ps1 -Credential $Creds -Wait
+Invoke-Command -ComputerName SBC365ADSYNC01 -FilePath C:\OSDCloud\CheckADComputer.ps1 -Credential $Creds
 
 Add-Computer -DomainName stdbev.com -Credential $Creds -OUPath $organizationalUnit -NewName $computerName -Force -Restart
 
 Stop-Transcript
+
 
 
 
