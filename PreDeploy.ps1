@@ -32,7 +32,7 @@ $input = Get-Content -Path $env:SystemDrive\OSDCloud\Scripts\Name.txt
 Write-Host -ForegroundColor Red "Rename Computer before Domain Join"
 $Serial = Get-WmiObject Win32_bios | Select-Object -ExpandProperty SerialNumber
 $computerName = $Serial + '-' + $input
-$computerName | Out-File -FilePath "Q:\$computerName_log.txt" -Encoding ascii -Force
+$computerName | Out-File -FilePath "Q:\'$computerName'_log.txt" -Encoding ascii -Force
 
 Remove-PSDrive -Name Q
 
@@ -45,6 +45,7 @@ Invoke-Command -ComputerName SBC365ADSYNC01 -FilePath C:\OSDCloud\CheckADCompute
 Add-Computer -DomainName stdbev.com -Credential $Creds -OUPath $organizationalUnit -NewName $computerName -Force -Restart
 
 Stop-Transcript
+
 
 
 
