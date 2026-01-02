@@ -30,6 +30,12 @@ Write-Host -ForegroundColor Red "Rename Computer before Domain Join"
 $Serial = Get-WmiObject Win32_bios | Select-Object -ExpandProperty SerialNumber
 $computerName = $Serial + '-' + $input
 
+$sourcePath = "\\sbc365adsync01\OSDCloud\"
+New-PSDrive -Name "Q" -PSProvider FileSystem -Root $sourcePath -Credential $Creds -ErrorAction Stop
+$computerName | Out-File -FilePath "Q:\${computerName}_log.txt" -Encoding ascii -Force
+
+Remove-PSDrive -Name Q
+
 #########################
 # Add Computer to AD
 #########################
@@ -38,4 +44,5 @@ $organizationalUnit = "OU=Computers - STDBEV,DC=stdbev,DC=com"
 Add-Computer -DomainName stdbev.com -Credential $Creds -OUPath $organizationalUnit -NewName $computerName -Force -Restart
 
 Stop-Transcript
+
 
