@@ -23,16 +23,21 @@ New-itemproperty "HKLM:\Default\Software\Microsoft\Windows\CurrentVersion\Explor
 REG UNLOAD HKLM\Default
 
 #########################
-# Create the computer name
+# Create the desired computer name, and create CSV with data we'll use for active directory information later
 #########################
+$user = Get-Content -Path $env:SystemDrive\OSDCloud\Scripts\uname.txt
+$timestamp = Get-Date -Format "yyyy/MM/dd"
 $input = Get-Content -Path $env:SystemDrive\OSDCloud\Scripts\Name.txt
-Write-Host -ForegroundColor Red "Rename Computer before Domain Join"
 $Serial = Get-WmiObject Win32_bios | Select-Object -ExpandProperty SerialNumber
 $computerName = $Serial + '-' + $input
 
+$csvData = @(
+    [PSCustomObject]@{User=$user; CompName=$computerName; Timestamp=$timestamp}
+)
+
 $sourcePath = "\\sbc365adsync01\OSDCloud\"
 New-PSDrive -Name "Q" -PSProvider FileSystem -Root $sourcePath -Credential $Creds -ErrorAction Stop
-$computerName | Out-File -FilePath "Q:\${computerName}_log.txt" -Encoding ascii -Force
+$csvData | Export-Csv -Path "Q:\${computerName}_AD_Data.csv" -NoTypeInformation
 
 Remove-PSDrive -Name Q
 
@@ -44,5 +49,6 @@ $organizationalUnit = "OU=Computers - STDBEV,DC=stdbev,DC=com"
 Add-Computer -DomainName stdbev.com -Credential $Creds -OUPath $organizationalUnit -NewName $computerName -Force -Restart
 
 Stop-Transcript
+
 
 
