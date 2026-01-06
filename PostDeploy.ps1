@@ -137,7 +137,7 @@ Write-Host "DiveTab Install Finished"
 
 #Install ASW
 Write-Host "`nStarting ASW Install..."
-Start-Process -FilePath "C:\Installers\IBMiAccess_v1r1\Windows_Application\install_acs_32_allusers.js" -Wait
+Start-Process -FilePath "C:\Installers\IBMiAccess_v1r1\Windows_Application\install_acs_64_allusers.js" -Wait
 Write-Host "ASWInstall Finished"
 
 #Copy ASW shortcuts to C: drive
@@ -177,6 +177,7 @@ Remove-Item -Path "C:\Windows\Setup\Scripts\PostDeploy.ps1"
 
 Stop-Transcript
 Restart-Computer
+
 
 
 
