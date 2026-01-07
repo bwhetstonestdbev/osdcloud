@@ -25,21 +25,11 @@ REG UNLOAD HKLM\Default
 #########################
 # Create the desired computer name, and create CSV with data we'll use for active directory information later
 #########################
-$user = Get-Content -Path $env:SystemDrive\OSDCloud\Scripts\uname.txt
-$timestamp = Get-Date -Format "yyyy/MM/dd"
 $input = Get-Content -Path $env:SystemDrive\OSDCloud\Scripts\Name.txt
 $Serial = Get-WmiObject Win32_bios | Select-Object -ExpandProperty SerialNumber
 $computerName = $Serial + '-' + $input
 
-$csvData = @(
-    [PSCustomObject]@{User=$user; CompName=$computerName; Timestamp=$timestamp}
-)
-
-$sourcePath = "\\sbc365adsync01\OSDCloud\"
-New-PSDrive -Name "Q" -PSProvider FileSystem -Root $sourcePath -Credential $Creds -ErrorAction Stop
-$csvData | Export-Csv -Path "Q:\${computerName}_AD_Data.csv" -NoTypeInformation
-
-Remove-PSDrive -Name Q
+$computerName | Out-File -FilePath "C:\OSDCloud\Scripts\DesiredCPUName.txt" -Encoding ascii -Force
 
 #########################
 # Add Computer to AD
@@ -49,6 +39,7 @@ $organizationalUnit = "OU=Computers - STDBEV,DC=stdbev,DC=com"
 Add-Computer -DomainName stdbev.com -Credential $Creds -OUPath $organizationalUnit -NewName $computerName -Force -Restart
 
 Stop-Transcript
+
 
 
 
