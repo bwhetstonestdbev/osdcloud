@@ -101,7 +101,7 @@ If (!(Test-Path "C:\ProgramData\OSDeploy")) {
 $OOBEDeployJson | Out-File -FilePath "C:\ProgramData\OSDeploy\OSDeploy.OOBEDeploy.json" -Encoding ascii -Force
 
 Invoke-RestMethod https://raw.githubusercontent.com/bwhetstonestdbev/osdcloud/refs/heads/main/PreDeploy.ps1 | Out-File -FilePath 'C:\Windows\Setup\scripts\PreDeploy.ps1' -Encoding ascii -Force
-Invoke-RestMethod https://raw.githubusercontent.com/bwhetstonestdbev/osdcloud/refs/heads/main/PostDeploy.ps1 | Out-File -FilePath 'C:\Windows\Setup\scripts\PostDeploy.ps1' -Encoding ascii -Force
+Invoke-RestMethod https://raw.githubusercontent.com/bwhetstonestdbev/osdcloud/refs/heads/main/PostDeploy2.ps1 | Out-File -FilePath 'C:\Windows\Setup\scripts\PostDeploy.ps1' -Encoding ascii -Force
 
 Write-Host -ForegroundColor Green "Create C:\Windows\Setup\Scripts\SetupComplete.cmd"
 $SetupCompleteCMD = @'
