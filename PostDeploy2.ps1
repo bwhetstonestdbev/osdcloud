@@ -155,7 +155,7 @@ Write-Host "DiveTab Install Finished"
 
 #Install IBM i Access Client Solutions
 Write-Host "`nStarting IBM i Access Client Solutions Install..."
-Start-Process -FilePath "C:\Installers\Image64a\setup.exe -Wait
+Start-Process -FilePath "C:\Installers\Image64a\setup.exe" -Wait
 Write-Host "IBM i Access Client Solutions Install Finished"
 
 #Install ASW
@@ -201,44 +201,3 @@ Remove-Item -Path "C:\Users\Public\Desktop\run.bat"
 
 Stop-Transcript
 Restart-Computer
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
