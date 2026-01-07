@@ -149,7 +149,7 @@ Write-Host "DiveTab Install Finished"
 Remove-Item -Path 'C:\Users\Public\Desktop\*' -Recurse
 
 #Put .hod shortcut for ASW on desktop
-Move-Item -Path "C:\Installers\ASW.hod" -Destination "C:\Users\Public\Desktop"
+#Move-Item -Path "C:\Installers\ASW.hod" -Destination "C:\Users\Public\Desktop"
 
 
 
@@ -177,6 +177,7 @@ Remove-Item -Path "C:\Windows\Setup\Scripts\PostDeploy.ps1"
 
 Stop-Transcript
 Restart-Computer
+
 
 
 
