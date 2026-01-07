@@ -52,6 +52,7 @@ else {
          User = Get-Content -path 'C:\OSDCloud\Scripts\uname.txt'
      }
  )
+ $data | Export-Csv -Path "C:\OSDCloud\$($env:COMPUTERNAME)_ad_computer_description_info.csv"
 }
 
 New-PSDrive -Name "Y" -PSProvider FileSystem -Root \\sbc365adsync01\osdcloud -Credential $credentials -ErrorAction Stop
