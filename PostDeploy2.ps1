@@ -41,6 +41,7 @@ if ($desiredCPUName -eq $env:COMPUTERNAME){
      }
  )
 $data | Export-Csv -Path "C:\OSDCloud\$($env:COMPUTERNAME)_ad_computer_description_info.csv" -NoTypeInformation
+$renameComputer = 'false'
 }
 
 else {
@@ -53,6 +54,7 @@ else {
      }
  )
  $data | Export-Csv -Path "C:\OSDCloud\$($env:COMPUTERNAME)_ad_computer_description_info.csv" -NoTypeInformation
+ $renameComputer = 'true'
 }
 
 New-PSDrive -Name "Y" -PSProvider FileSystem -Root \\sbc365adsync01\osdcloud -Credential $credentials -ErrorAction Stop
