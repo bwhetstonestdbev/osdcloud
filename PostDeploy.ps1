@@ -136,14 +136,14 @@ Start-Process -FilePath "C:\Installers\Newest DivePack\DiveTab-Setup-7.1.40.exe"
 Write-Host "DiveTab Install Finished"
 
 #Install ASW
-Write-Host "`nStarting ASW Install..."
-Start-Process -FilePath "C:\Installers\IBMiAccess_v1r1\Windows_Application\install_acs_64_allusers.js" -Wait
-Write-Host "ASWInstall Finished"
+#Write-Host "`nStarting ASW Install..."
+#Start-Process -FilePath "C:\Installers\IBMiAccess_v1r1\Windows_Application\install_acs_64_allusers.js" -Wait
+#Write-Host "ASW Install Finished"
 
 #Copy ASW shortcuts to C: drive
-Write-Host "`nMoving ASW shortcuts"
-Move-Item -Path "C:\Users\Public\Desktop\Access Client Solutions.lnk" -Destination "C:\"
-Move-Item -Path "C:\Users\Public\Desktop\ACS Session Mgr.lnk" -Destination "C:\"
+#Write-Host "`nMoving ASW shortcuts"
+#Move-Item -Path "C:\Users\Public\Desktop\Access Client Solutions.lnk" -Destination "C:\"
+#Move-Item -Path "C:\Users\Public\Desktop\ACS Session Mgr.lnk" -Destination "C:\"
 
 #Remove Desktop Shortcuts from Public
 Remove-Item -Path 'C:\Users\Public\Desktop\*' -Recurse
@@ -177,6 +177,7 @@ Remove-Item -Path "C:\Windows\Setup\Scripts\PostDeploy.ps1"
 
 Stop-Transcript
 Restart-Computer
+
 
 
 
