@@ -157,7 +157,7 @@ Remove-Item -Path 'C:\Users\Public\Desktop\*' -Recurse
 # Run command on remote server to apply flag to computer to install Splashtop
 #=================================
 
-Invoke-Command -ComputerName SBC365ADSYNC01 -FilePath C:\OSDCloud\UpdateExtAttribute.ps1 -Credential $Creds 
+#Invoke-Command -ComputerName SBC365ADSYNC01 -FilePath C:\OSDCloud\UpdateExtAttribute.ps1 -Credential $Creds 
 
 
 #=================================
@@ -165,18 +165,18 @@ Invoke-Command -ComputerName SBC365ADSYNC01 -FilePath C:\OSDCloud\UpdateExtAttri
 #=================================
 
 #Reset Registry to not allow automatic login
-Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\WinLogon' -Name 'AutoAdminLogon' -Value 0 -Force
-Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\WinLogon' -Name 'DefaultUserName' -Value "" -Force
+#Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\WinLogon' -Name 'AutoAdminLogon' -Value 0 -Force
+#Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\WinLogon' -Name 'DefaultUserName' -Value "" -Force
 
 #Delete OSDCloud Directory and unattend.xml 
-Remove-Item -Path "C:\OSDCloud" -Recurse
-Remove-Item -Path "C:\Installers" -Recurse
-Remove-Item -Path "C:\Windows\Panther\unattend.xml"
-Remove-Item -Path "C:\Windows\Setup\Scripts\PreDeploy.ps1"
-Remove-Item -Path "C:\Windows\Setup\Scripts\PostDeploy.ps1"
+#Remove-Item -Path "C:\OSDCloud" -Recurse
+#Remove-Item -Path "C:\Installers" -Recurse
+#Remove-Item -Path "C:\Windows\Panther\unattend.xml"
+#Remove-Item -Path "C:\Windows\Setup\Scripts\PreDeploy.ps1"
+#Remove-Item -Path "C:\Windows\Setup\Scripts\PostDeploy.ps1"
 
-Stop-Transcript
-Restart-Computer
+#Stop-Transcript
+#Restart-Computer
 
 
 
