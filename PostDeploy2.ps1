@@ -137,9 +137,9 @@ Start-Process -FilePath "C:\Installers\teamsbootstrapper.exe" -ArgumentList "-p"
 Write-Host "Microsot Teams Install Finished"
 
 #Install Office 365
-Write-Host "`nStarting Office 365 Install..."
-Start-Process -FilePath "C:\Installers\ODT\setup.exe" -ArgumentList "/configure config.xml" -Wait
-Write-Host "Microsot Teams Install Finished"
+#Write-Host "`nStarting Office 365 Install..."
+#Start-Process -FilePath "C:\Installers\ODT\setup.exe" -ArgumentList "/configure config.xml" -Wait
+#Write-Host "Microsot Teams Install Finished"
 
 #Install JRE 32-bit
 Write-Host "`nStarting Java RE 32-bit Install..."
