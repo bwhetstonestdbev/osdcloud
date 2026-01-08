@@ -73,7 +73,7 @@ else{
 }
 
 $sourcePath = "\\sbcitutil1\OSDCloud\Installers"
-
+Write-Host "`nCopying over install files...."
 try{
 New-PSDrive -Name "Z" -PSProvider FileSystem -Root $sourcePath -Credential $credentials -ErrorAction Stop
 
@@ -88,7 +88,7 @@ catch{
 finally {
  Remove-PSDrive -Name "Z" -Force -ErrorAction SilentlyContinue
 }
-
+Write-Host "`nInstall files copied over"
 #=================================
 # Create AppData Directory for Diver .ini and move files over
 #=================================
