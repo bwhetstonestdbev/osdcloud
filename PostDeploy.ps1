@@ -161,7 +161,7 @@ Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\WinLo
 Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\WinLogon' -Name 'DefaultUserName' -Value "" -Force
 
 #Delete OSDCloud Directory and unattend.xml 
-Remove-Item -Path "C:\OSDCloud" -Recurse
+#Remove-Item -Path "C:\OSDCloud" -Recurse
 Remove-Item -Path "C:\Installers" -Recurse
 Remove-Item -Path "C:\Windows\Panther\unattend.xml"
 Remove-Item -Path "C:\Windows\Setup\Scripts\PreDeploy.ps1"
@@ -170,6 +170,7 @@ Remove-Item -Path "C:\Windows\Users\Public\Desktop\run.bat"
 
 Stop-Transcript
 Restart-Computer
+
 
 
 
