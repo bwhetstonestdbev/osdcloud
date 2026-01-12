@@ -1,6 +1,7 @@
 $stampDate = Get-Date
+New-Item -Path "C:\OSDCloudLogs\" -ItemType Directory
 $scriptName = ([System.IO.Path]::GetFileNameWithoutExtension($(Split-Path $script:MyInvocation.MyCommand.Path -Leaf)))
-$logFile = "$env:OSDCloud\Logs\$scriptName-" + $stampDate.ToFileTimeUtc() + ".log"
+$logFile = "C:\OSDCloudLogs\$scriptName-" + $stampDate.ToFileTimeUtc() + ".log"
 Start-Transcript -Path $logFile -NoClobber
 $VerbosePreference = "Continue"
 
@@ -30,15 +31,36 @@ Set-TimeZone -Name 'Central Standard Time'
 #=================================
 # Create CSV to move to domain controller with information to update AD description
 #=================================
-$data = @(
-    [PSCustomObject]@{
-        $computerName = $env:COMPUTERNAME
-        $timestamp = Get-Date -Format "MM/dd/yyyy"
-        $name = 'C:\OSDCloud\Scripts\uname.txt'
-    }    
-)
-$data | Export-Csv -Path "\\sbc365adsync01\c$\Scripts\update_ad_computer_descriptiondescription_info.csv" -Credential $credentials
+$desiredCPUName = Get-Content -Path 'C:\OSDCloud\Scripts\DesiredCPUName.txt'
 
+if ($desiredCPUName -eq $env:COMPUTERNAME){
+    $data = @(
+        [PSCustomObject]@{
+         CompName = $env:COMPUTERNAME
+         Timestamp = Get-Date -Format "MM/dd/yyyy"
+         User = Get-Content -path 'C:\OSDCloud\Scripts\uname.txt'
+     }
+ )
+$data | Export-Csv -Path "C:\OSDCloud\$($env:COMPUTERNAME)_ad_computer_description_info.csv" -NoTypeInformation
+$renameComputer = 'false'
+}
+
+else {
+    $data = @(
+        [PSCustomObject]@{
+         CompName = $env:COMPUTERNAME
+         DesiredCPUName = $desiredCPUName
+         Timestamp = Get-Date -Format "MM/dd/yyyy"
+         User = Get-Content -path 'C:\OSDCloud\Scripts\uname.txt'
+     }
+ )
+ $data | Export-Csv -Path "C:\OSDCloud\$($env:COMPUTERNAME)_ad_computer_description_info.csv" -NoTypeInformation
+ $renameComputer = 'true'
+}
+
+New-PSDrive -Name "Y" -PSProvider FileSystem -Root \\sbc365adsync01\osdcloud -Credential $credentials -ErrorAction Stop
+Copy-Item -Path "C:\OSDCloud\$($env:COMPUTERNAME)_ad_computer_description_info.csv" -Destination "Y:\" -Force
+Remove-PSDrive -Name "Y" -Force
 #=================================
 # Copy Installers To Local Machine
 #=================================
@@ -52,7 +74,7 @@ else{
 }
 
 $sourcePath = "\\sbcitutil1\OSDCloud\Installers"
-
+Write-Host "`nCopying over install files...."
 try{
 New-PSDrive -Name "Z" -PSProvider FileSystem -Root $sourcePath -Credential $credentials -ErrorAction Stop
 
@@ -67,7 +89,7 @@ catch{
 finally {
  Remove-PSDrive -Name "Z" -Force -ErrorAction SilentlyContinue
 }
-
+Write-Host "`nInstall files copied over"
 #=================================
 # Create AppData Directory for Diver .ini and move files over
 #=================================
@@ -115,6 +137,11 @@ Write-Host "`nStarting Microsoft Teams Install..."
 Start-Process -FilePath "C:\Installers\teamsbootstrapper.exe" -ArgumentList "-p" -Wait
 Write-Host "Microsot Teams Install Finished"
 
+#Install Office 365
+Write-Host "`nStarting Office 365 Install..."
+Start-Process -FilePath "C:\Installers\ODT\setup.exe" -ArgumentList "/configure config.xml" -Wait
+Write-Host "Microsot Teams Install Finished"
+
 #Install JRE 32-bit
 Write-Host "`nStarting Java RE 32-bit Install..."
 Start-Process -FilePath "C:\Installers\jre-8u471-windows-i586.exe" -ArgumentList "/s" -Wait
@@ -135,21 +162,34 @@ Write-Host "`nStarting DiveTab Install..."
 Start-Process -FilePath "C:\Installers\Newest DivePack\DiveTab-Setup-7.1.40.exe" -ArgumentList "/S" -Wait
 Write-Host "DiveTab Install Finished"
 
+#Install IBM i Access Client Solutions
+Write-Host "`nStarting IBM i Access Client Solutions Install..."
+Start-Process -FilePath "C:\Installers\Image64a\setup.exe" -Wait
+Write-Host "IBM i Access Client Solutions Install Finished"
+
 #Install ASW
-#Write-Host "`nStarting ASW Install..."
-#Start-Process -FilePath "C:\Installers\IBMiAccess_v1r1\Windows_Application\install_acs_64_allusers.js" -Wait
-#Write-Host "ASW Install Finished"
+Write-Host "`nStarting ASW Install..."
+Start-Process -FilePath "C:\Installers\IBMiAccess_v1r1\Windows_Application\install_acs_32_allusers.js" -Wait
+Write-Host "ASW Install Finished"
 
 #Copy ASW shortcuts to C: drive
-#Write-Host "`nMoving ASW shortcuts"
-#Move-Item -Path "C:\Users\Public\Desktop\Access Client Solutions.lnk" -Destination "C:\"
-#Move-Item -Path "C:\Users\Public\Desktop\ACS Session Mgr.lnk" -Destination "C:\"
+Write-Host "`nMoving ASW shortcuts"
+Move-Item -Path "C:\Users\Public\Desktop\Access Client Solutions.lnk" -Destination "C:\"
+Move-Item -Path "C:\Users\Public\Desktop\ACS Session Mgr.lnk" -Destination "C:\"
 
 #Remove Desktop Shortcuts from Public
 Remove-Item -Path 'C:\Users\Public\Desktop\*' -Recurse
 
 #Put .hod shortcut for ASW on desktop
-#Move-Item -Path "C:\Installers\ASW.hod" -Destination "C:\Users\Public\Desktop"
+Move-Item -Path "C:\Installers\ASW.hod" -Destination "C:\Users\Public\Desktop"
+
+
+
+#=================================
+# Run command on remote server to apply flag to computer to install Splashtop
+#=================================
+
+#Invoke-Command -ComputerName SBC365ADSYNC01 -FilePath C:\OSDCloud\UpdateExtAttribute.ps1 -Credential $Creds 
 
 
 #=================================
@@ -161,55 +201,12 @@ Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\WinLo
 Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\WinLogon' -Name 'DefaultUserName' -Value "" -Force
 
 #Delete OSDCloud Directory and unattend.xml 
-#Remove-Item -Path "C:\OSDCloud" -Recurse
+Remove-Item -Path "C:\OSDCloud" -Recurse
 Remove-Item -Path "C:\Installers" -Recurse
 Remove-Item -Path "C:\Windows\Panther\unattend.xml"
 Remove-Item -Path "C:\Windows\Setup\Scripts\PreDeploy.ps1"
 Remove-Item -Path "C:\Windows\Setup\Scripts\PostDeploy.ps1"
-Remove-Item -Path "C:\Windows\Users\Public\Desktop\run.bat"
+Remove-Item -Path "C:\Users\Public\Desktop\run.bat"
 
 Stop-Transcript
 Restart-Computer
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
