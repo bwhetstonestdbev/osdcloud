@@ -194,8 +194,8 @@ Write-Host "`n`nComputer did not get the desired computer name. Log into SBC365A
             `nUse computer name $desiredCPUName when prompted"
 Read-Host "`nPress enter after you've run the above Powershell script."
 
-Write-Host "`nWaiting 60 seconds"
-Start-Sleep -Seconds 60
+Write-Host "`nWaiting 180 seconds for ADUC to catch up"
+Start-Sleep -Seconds 180
 
 Write-Host "`nRenaming computer to $desiredCPUName"
 Rename-Computer -NewName $desiredCPUName -DomainCredential $credentials 
@@ -220,6 +220,7 @@ Remove-Item -Path "C:\Users\Public\Desktop\run.bat"
 
 Stop-Transcript
 Restart-Computer
+
 
 
 
