@@ -191,13 +191,13 @@ Move-Item -Path "C:\Installers\ASW.hod" -Destination "C:\Users\Public\Desktop"
 
 if ($renameComputer -eq 'true'){
 Write-Host "`n`nComputer did not get the desired computer name. Log into SBC365ADSYNC01 server and run the Powershell script 'RemoveADComputer.ps1' located in C:\OSDCloud
-            `nUse computer name $env:COMPUTERNAME when prompted"
+            `nUse computer name $desiredCPUName when prompted"
 Read-Host "`nPress enter after you've run the above Powershell script."
 
 Write-Host "`nWaiting 60 seconds"
 Start-Sleep -Seconds 60
 
-Write-Host "`nRenaming computer to" $desiredCPUName
+Write-Host "`nRenaming computer to $desiredCPUName"
 Rename-Computer -NewName $desiredCPUName -DomainCredential $credentials 
 }
 
@@ -220,5 +220,6 @@ Remove-Item -Path "C:\Users\Public\Desktop\run.bat"
 
 Stop-Transcript
 Restart-Computer
+
 
 
