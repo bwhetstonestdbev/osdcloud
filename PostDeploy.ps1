@@ -186,10 +186,18 @@ Move-Item -Path "C:\Installers\ASW.hod" -Destination "C:\Users\Public\Desktop"
 
 
 #=================================
-# Run command on remote server to apply flag to computer to install Splashtop
+# Check to see if computer needs to be renamed
 #=================================
 
-#Invoke-Command -ComputerName SBC365ADSYNC01 -FilePath C:\OSDCloud\UpdateExtAttribute.ps1 -Credential $Creds 
+if ($renameComputer -eq 'true'){
+Write-Host "`n`nComputer did not get the desired computer name. Log into SBC365ADSYNC01 server and run the Powershell script 'RemoveADComputer.ps1' located in C:\OSDCloud"
+Read-Host "`nPress enter after you've run the above Powershell script."
+
+Write-Host "`nWaiting 60 seconds for AD"
+
+Write-Host "`nRenaming computer to" $desiredCPUName
+Rename-Computer -NewName $desiredCPUName -DomainCredential $credentials 
+}
 
 
 #=================================
@@ -210,3 +218,4 @@ Remove-Item -Path "C:\Users\Public\Desktop\run.bat"
 
 Stop-Transcript
 Restart-Computer
+
