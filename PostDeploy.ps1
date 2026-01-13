@@ -139,7 +139,7 @@ Write-Host "Microsot Teams Install Finished"
 
 #Install Office 365
 Write-Host "`nStarting Office 365 Install..."
-Start-Process -FilePath "C:\Installers\ODT\setup.exe" -ArgumentList "/configure config.xml" -Wait
+Start-Process -FilePath "C:\Installers\ODT\setup.exe" -ArgumentList "/configure C:\Installers\ODT\config.xml" -Wait
 Write-Host "Office 365 Install Finished"
 
 #Install JRE 32-bit
@@ -220,6 +220,7 @@ Remove-Item -Path "C:\Users\Public\Desktop\run.bat"
 
 Stop-Transcript
 Restart-Computer
+
 
 
 
