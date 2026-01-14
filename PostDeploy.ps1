@@ -40,7 +40,6 @@ $data = @(
          User = Get-Content -path 'C:\OSDCloud\Scripts\uname.txt'
      }
  )
-$data | Export-Csv -Path "C:\OSDCloud\CompDescription\CompDesc.csv" -NoTypeInformation -Append
 
 if ($desiredCPUName -eq $env:COMPUTERNAME){    
 $renameComputer = 'false'
@@ -212,6 +211,7 @@ Remove-Item -Path "C:\Users\Public\Desktop\run.bat"
 
 Stop-Transcript
 Restart-Computer
+
 
 
 
