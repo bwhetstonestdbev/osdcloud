@@ -33,33 +33,25 @@ Set-TimeZone -Name 'Central Standard Time'
 #=================================
 $desiredCPUName = Get-Content -Path 'C:\OSDCloud\Scripts\DesiredCPUName.txt'
 
-if ($desiredCPUName -eq $env:COMPUTERNAME){
-    $data = @(
+$data = @(
         [PSCustomObject]@{
          CompName = $env:COMPUTERNAME
          Timestamp = Get-Date -Format "MM/dd/yyyy"
          User = Get-Content -path 'C:\OSDCloud\Scripts\uname.txt'
      }
  )
-$data | Export-Csv -Path "C:\OSDCloud\$($env:COMPUTERNAME)_ad_computer_description_info.csv" -NoTypeInformation
+$data | Export-Csv -Path "C:\OSDCloud\CompDescription\CompDesc.csv" -NoTypeInformation -Append
+
+if ($desiredCPUName -eq $env:COMPUTERNAME){    
 $renameComputer = 'false'
 }
 
 else {
-    $data = @(
-        [PSCustomObject]@{
-         CompName = $env:COMPUTERNAME
-         DesiredCPUName = $desiredCPUName
-         Timestamp = Get-Date -Format "MM/dd/yyyy"
-         User = Get-Content -path 'C:\OSDCloud\Scripts\uname.txt'
-     }
- )
- $data | Export-Csv -Path "C:\OSDCloud\$($env:COMPUTERNAME)_ad_computer_description_info.csv" -NoTypeInformation
  $renameComputer = 'true'
 }
 
 New-PSDrive -Name "Y" -PSProvider FileSystem -Root \\sbc365adsync01\osdcloud -Credential $credentials -ErrorAction Stop
-Copy-Item -Path "C:\OSDCloud\$($env:COMPUTERNAME)_ad_computer_description_info.csv" -Destination "Y:\" -Force
+$data | Export-Csv -Path "Y:\CompDescription\CompDesc.csv" -NoTypeInformation -Append
 Remove-PSDrive -Name "Y" -Force
 #=================================
 # Copy Installers To Local Machine
@@ -220,6 +212,7 @@ Remove-Item -Path "C:\Users\Public\Desktop\run.bat"
 
 Stop-Transcript
 Restart-Computer
+
 
 
 
