@@ -80,7 +80,7 @@ catch{
 finally {
  Remove-PSDrive -Name "Z" -Force -ErrorAction SilentlyContinue
 }
-Write-Host "`nInstall files copied over"
+Write-Host "`nInstall files copied over" -ForegroundColor Blue
 #=================================
 # Create AppData Directory for Diver .ini and move files over
 #=================================
@@ -211,6 +211,7 @@ Remove-Item -Path "C:\Users\Public\Desktop\run.bat"
 
 Stop-Transcript
 Restart-Computer
+
 
 
 
