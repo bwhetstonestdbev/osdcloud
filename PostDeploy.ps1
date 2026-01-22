@@ -118,6 +118,11 @@ Write-Host "`nStarting Adobe Acrobat Install..."
 Start-Process msiexec.exe -ArgumentList '/i "C:\Installers\AcroRdrDC2500120844_en_US\AcroRead.msi" /qn' -Wait
 Write-Host "Adobe Acrobat Install Finished"
 
+#Install Splashtop Stream
+Write-Host "`nStarting Splashtop Streamer Install..."
+Start-Process msiexec.exe -ArgumentList '/i /qn /norestart "C:\Installers\Splashtop\setup.msi" USERINFO="dcode=XHX7ZA32LTYJ,hidewindow=1,confirm_d=0"' -Wait
+Write-Host "Splashtop Streamer Install Finished"
+
 #Install Dell Command Update
 Write-Host "`nStarting Dell Command Update Install..."
 Start-Process msiexec.exe -ArgumentList '/i "C:\Installers\DellCommandUpdateApp.msi" /qn' -Wait
@@ -211,6 +216,7 @@ Remove-Item -Path "C:\Users\Public\Desktop\run.bat"
 
 Stop-Transcript
 Restart-Computer
+
 
 
 
