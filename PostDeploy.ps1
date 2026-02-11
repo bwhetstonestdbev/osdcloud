@@ -12,9 +12,9 @@ $VerbosePreference = "Continue"
 #=================================
 # Create Credentials for Application Deployment
 #=================================
-$username = 'sbc.imaging'
-$pass = 'C:\OSDCloud\Scripts\pass.txt' 
-$credentials = New-Object System.Management.Automation.PSCredential -ArgumentList $username, $pass 
+$key = Get-Content -Path $env:SystemDrive\OSDCloud\Scripts\key.txt
+$SecurePassword = Get-Content -Path $env:SystemDrive\OSDCloud\Scripts\pass.txt | ConvertTo-SecureString -Key $Key
+$Creds = New-Object System.Management.Automation.PSCredential ("stdbev.com\sbc.imaging",$SecurePassword)
 
 #=================================
 #Activate Windows
@@ -216,6 +216,7 @@ Remove-Item -Path "C:\Windows\Setup\Scripts\PostDeploy.ps1"
 
 Stop-Transcript
 Restart-Computer
+
 
 
 
