@@ -94,7 +94,7 @@ If (!(Test-Path "C:\ProgramData\OSDeploy")) {
 $OOBEDeployJson | Out-File -FilePath "C:\ProgramData\OSDeploy\OSDeploy.OOBEDeploy.json" -Encoding ascii -Force
 
 Invoke-RestMethod https://raw.githubusercontent.com/bwhetstonestdbev/osdcloud/refs/heads/main/PreDeploy.ps1 | Out-File -FilePath 'C:\Windows\Setup\scripts\PreDeploy.ps1' -Encoding ascii -Force
-Invoke-RestMethod https://raw.githubusercontent.com/bwhetstonestdbev/osdcloud/refs/heads/main/PostDeploy2.ps1 | Out-File -FilePath 'C:\Windows\Setup\scripts\PostDeploy.ps1' -Encoding ascii -Force
+Invoke-RestMethod https://raw.githubusercontent.com/bwhetstonestdbev/osdcloud/refs/heads/main/PostDeploy.ps1 | Out-File -FilePath 'C:\Windows\Setup\scripts\PostDeploy.ps1' -Encoding ascii -Force
 
 Write-Host -ForegroundColor Green "Create C:\Windows\Setup\Scripts\SetupComplete.cmd"
 $SetupCompleteCMD = @'
@@ -114,7 +114,7 @@ $UnattendXml = @'
         <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="NonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <AutoLogon>
                 <Password>
-                    <Value>KgBxAEAARAB6AEwAYgAyACQAOQB6AFkAawAmADgASABQAGEAcwBzAHcAbwByAGQA</Value>
+                    <Value>awAzAHQAMwBMAG8AbgBFAFAAYQBzAHMAdwBvAHIAZAA=</Value>
                     <PlainText>false</PlainText>
                 </Password>
                 <Enabled>true</Enabled>
@@ -134,13 +134,13 @@ $UnattendXml = @'
             </OOBE>
             <UserAccounts>
                 <AdministratorPassword>
-                    <Value>QQBkAG0AaQBuAGkAcwB0AHIAYQB0AG8AcgBQAGEAcwBzAHcAbwByAGQA</Value>
+                    <Value>awAzAHQAMwBMAG8AbgBFAEEAZABtAGkAbgBpAHMAdAByAGEAdABvAHIAUABhAHMAcwB3AG8AcgBkAA==</Value>
                     <PlainText>false</PlainText>
                 </AdministratorPassword>
                 <LocalAccounts>
                     <LocalAccount wcm:action="add">
                         <Password>
-                            <Value>KgBxAEAARAB6AEwAYgAyACQAOQB6AFkAawAmADgASABQAGEAcwBzAHcAbwByAGQA</Value>
+                            <Value>awAzAHQAMwBMAG8AbgBFAFAAYQBzAHMAdwBvAHIAZAA=</Value>
                             <PlainText>false</PlainText>
                         </Password>
                         <Name>SBCAdmin</Name>
@@ -184,7 +184,6 @@ Copy-Item X:\OSDCloud\Config\Scripts\Name.txt C:\OSDCloud\Scripts -Force
 Copy-Item X:\OSDCloud\Config\Scripts\uname.txt C:\OSDCloud\Scripts -Force
 
 Restart-Computer
-
 
 
 
