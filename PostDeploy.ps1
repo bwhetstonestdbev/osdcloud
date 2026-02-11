@@ -14,7 +14,7 @@ $VerbosePreference = "Continue"
 #=================================
 $username = 'sbc.imaging'
 $pass = 'C:\OSDCloud\Scripts\pass.txt' 
-$credentials = New-Object System.Management.Automation.PSCredential -ArgumentList $username, (Get-Content $pass | ConvertTo-SecureString -AsPlainText -Force)
+$credentials = New-Object System.Management.Automation.PSCredential -ArgumentList $username, $pass 
 
 #=================================
 #Activate Windows
@@ -216,6 +216,7 @@ Remove-Item -Path "C:\Windows\Setup\Scripts\PostDeploy.ps1"
 
 Stop-Transcript
 Restart-Computer
+
 
 
 
