@@ -13,7 +13,9 @@ $VerbosePreference = "Continue"
 # Create Credentials for Application Deployment
 #=================================
 $Key = Get-Content -Path $env:SystemDrive\OSDCloud\Scripts\password_aes.key
-$SecurePassword = Get-Content -Path $env:SystemDrive\OSDCloud\Scripts\pass.txt | ConvertTo-SecureString -Key $Key
+$pass = Get-Content -Path $env:SystemDrive\OSDCloud\Scripts\pass.txt 
+$SecurePassword = ConvertTo-SecureString $pass -AsPlainText -Force
+#$SecurePassword = Get-Content -Path $env:SystemDrive\OSDCloud\Scripts\pass.txt | ConvertTo-SecureString -Key $Key
 $Creds = New-Object System.Management.Automation.PSCredential ("stdbev.com\sbc.imaging",$SecurePassword)
 
 #=================================
@@ -216,6 +218,7 @@ Remove-Item -Path "C:\Windows\Setup\Scripts\PostDeploy.ps1"
 
 Stop-Transcript
 Restart-Computer
+
 
 
 
