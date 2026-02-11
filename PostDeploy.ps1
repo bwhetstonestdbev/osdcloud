@@ -49,7 +49,7 @@ else {
  $renameComputer = 'true'
 }
 
-New-PSDrive -Name "Y" -PSProvider FileSystem -Root \\sbc365adsync01\osdcloud -Credential $credentials -ErrorAction Stop
+New-PSDrive -Name "Y" -PSProvider FileSystem -Root \\sbc365adsync01\osdcloud -Credential $Creds -ErrorAction Stop
 $data | Export-Csv -Path "Y:\CompDescription\CompDesc.csv" -NoTypeInformation -Append
 Remove-PSDrive -Name "Y" -Force
 #=================================
@@ -67,7 +67,7 @@ else{
 $sourcePath = "\\sbcitutil1\OSDCloud\Installers"
 Write-Host "`nCopying over install files...."
 try{
-New-PSDrive -Name "Z" -PSProvider FileSystem -Root $sourcePath -Credential $credentials -ErrorAction Stop
+New-PSDrive -Name "Z" -PSProvider FileSystem -Root $sourcePath -Credential $Creds -ErrorAction Stop
 
 Copy-Item -Path "Z:\*" -Destination $installerPath -Recurse -Force -ErrorAction Stop
 
@@ -194,7 +194,7 @@ Write-Host "`nWaiting 300 seconds for ADUC to catch up"
 Start-Sleep -Seconds 300
 
 Write-Host "`nRenaming computer to $desiredCPUName"
-Rename-Computer -NewName $desiredCPUName -DomainCredential $credentials 
+Rename-Computer -NewName $desiredCPUName -DomainCredential $Creds
 }
 
 
@@ -216,6 +216,7 @@ Remove-Item -Path "C:\Windows\Setup\Scripts\PostDeploy.ps1"
 
 Stop-Transcript
 Restart-Computer
+
 
 
 
