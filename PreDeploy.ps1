@@ -10,7 +10,7 @@ $VerbosePreference = "Continue"
 #########################
 # Create Credentials
 #########################
-$key = Get-Content -Path $env:SystemDrive\OSDCloud\Scripts\key.txt
+$Key = Get-Content -Path $env:SystemDrive\OSDCloud\Scripts\password_aes.key
 $SecurePassword = Get-Content -Path $env:SystemDrive\OSDCloud\Scripts\pass.txt | ConvertTo-SecureString -Key $Key
 $Creds = New-Object System.Management.Automation.PSCredential ("stdbev.com\sbc.imaging",$SecurePassword)
 
@@ -39,6 +39,7 @@ $organizationalUnit = "OU=Computers - STDBEV,DC=stdbev,DC=com"
 Add-Computer -DomainName stdbev.com -Credential $Creds -OUPath $organizationalUnit -NewName $computerName -Force -Restart
 
 Stop-Transcript
+
 
 
 
