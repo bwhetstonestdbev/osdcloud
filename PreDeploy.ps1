@@ -13,8 +13,9 @@ $VerbosePreference = "Continue"
 $Key = Get-Content -Path $env:SystemDrive\OSDCloud\Scripts\AES.key
 $pass = Get-Content -Path $env:SystemDrive\OSDCloud\Scripts\pass.txt 
 $SecurePassword = ConvertTo-SecureString -String $pass -Key $key
+$user = 'stdbev.com\sbc.imaging'
 #$SecurePassword = Get-Content -Path $env:SystemDrive\OSDCloud\Scripts\pass.txt | ConvertTo-SecureString -Key $Key
-$Creds = New-Object System.Management.Automation.PSCredential ("stdbev.com\sbc.imaging",$SecurePassword)
+$Creds = New-Object System.Management.Automation.PSCredential ($user, $SecurePassword)
 
 #########################
 # Set Default Taskbar Settings
@@ -41,6 +42,7 @@ $organizationalUnit = "OU=Computers - STDBEV,DC=stdbev,DC=com"
 Add-Computer -DomainName stdbev.com -Credential $Creds -OUPath $organizationalUnit -NewName $computerName -Force -Restart
 
 Stop-Transcript
+
 
 
 
