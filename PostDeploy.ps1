@@ -15,8 +15,9 @@ $VerbosePreference = "Continue"
 $Key = Get-Content -Path $env:SystemDrive\OSDCloud\Scripts\AES.key
 $pass = Get-Content -Path $env:SystemDrive\OSDCloud\Scripts\pass.txt 
 $SecurePassword = ConvertTo-SecureString -String $pass -Key $key
+$user = 'stdbev.com\sbc.imaging'
 #$SecurePassword = Get-Content -Path $env:SystemDrive\OSDCloud\Scripts\pass.txt | ConvertTo-SecureString -Key $Key
-$Creds = New-Object System.Management.Automation.PSCredential ("stdbev.com\sbc.imaging",$SecurePassword)
+$Creds = New-Object System.Management.Automation.PSCredential ($user, $SecurePassword)
 
 #=================================
 #Activate Windows
@@ -218,6 +219,7 @@ Remove-Item -Path "C:\Windows\Setup\Scripts\PostDeploy.ps1"
 
 Stop-Transcript
 Restart-Computer
+
 
 
 
