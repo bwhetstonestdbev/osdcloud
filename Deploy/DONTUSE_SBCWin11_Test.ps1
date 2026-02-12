@@ -181,7 +181,6 @@ $BatchPath = "$BatchLoc\run.bat"
 $Batch | Out-File -FilePath $BatchPath -Encoding utf8 -Width 2000 -Force
 
 Copy-Item X:\OSDCloud\Config\Scripts\Name.txt C:\OSDCloud\Scripts -Force
-Copy-Item X:\OSDCloud\Config\Scripts\pass.txt C:\OSDCloud\Scripts -Force
 Copy-Item X:\OSDCloud\Config\Scripts\uname.txt C:\OSDCloud\Scripts -Force
 
 Restart-Computer
