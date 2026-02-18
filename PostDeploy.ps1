@@ -67,7 +67,22 @@ else{
     Write-Host "Path exists"
 }
 
-$sourcePath = "\\sbcitutil1\OSDCloud\Installers"
+#=================================
+# Get IP Address of local machine to avoid copying installers over site-to-site VPN 
+#=================================
+
+$ipAddress = Get-NetIPAddress | Where-Object {$_.IPAddress -like "10.*" -and $_.InterfaceAlias -like "Ethernet*"}
+
+if ($ipAddress.IPAddress -like "10.1*"){
+    $sourcePath = "\\sbcitutil1\OSDCloud\Installers"
+
+}
+else {
+    $sourcePath = "\\SBCFSLEN1\Installers"
+}
+
+Write-Host "`nFiles are being copied over from $sourcePath"
+
 Write-Host "`nCopying over install files...."
 try{
 New-PSDrive -Name "Z" -PSProvider FileSystem -Root $sourcePath -Credential $Creds -ErrorAction Stop
@@ -219,6 +234,7 @@ Remove-Item -Path "C:\Windows\Setup\Scripts\PostDeploy.ps1"
 
 Stop-Transcript
 Restart-Computer
+
 
 
 
