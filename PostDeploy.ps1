@@ -224,6 +224,8 @@ Rename-Computer -NewName $desiredCPUName -DomainCredential $Creds
 Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\WinLogon' -Name 'AutoAdminLogon' -Value 0 -Force
 Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\WinLogon' -Name 'DefaultUserName' -Value "" -Force
 
+Stop-Transcript
+
 #Delete OSDCloud Directory and unattend.xml 
 Remove-Item -Path "C:\OSDCloud" -Recurse
 Remove-Item -Path "C:\OSDCloudLogs" -Recurse
